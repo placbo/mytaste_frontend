@@ -1,7 +1,7 @@
-import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore/lite";
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore/lite';
 
-export const ITEM_COLLECTION_NAME = "items";
+export const ITEM_COLLECTION_NAME = 'items';
 // console.log(process.env.REACT_APP_MOCK_API);
 
 // export const getItem = (id) => {
@@ -45,14 +45,7 @@ export const ITEM_COLLECTION_NAME = "items";
 export const getAllItems = async () => {
   const itemCollection = collection(db, ITEM_COLLECTION_NAME);
   const itemSnapshot = await getDocs(itemCollection);
-  const list = itemSnapshot.docs.map((doc) => doc.data());
-  console.log(
-    "%cXXX",
-    "color:red;font-family:system-ui;font-size:1.5rem;font-weight:bold",
-    list
-  );
-
-  return list;
+  return itemSnapshot.docs.map((doc) => doc.data());
 };
 
 // export const getAllItems = () => {
