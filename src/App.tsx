@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       hepp
-      <Router basename="/vite-mytaste2">
+      <Router basename="/mytaste2">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/:id" element={<Item />} />

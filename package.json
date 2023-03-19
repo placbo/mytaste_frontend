@@ -1,9 +1,9 @@
 {
-  "name": "vite-mytaste2",
+  "name": "mytaste2",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://placbo.github.io/vite-mytaste2/",
+  "homepage": "https://placbo.github.io/mytaste2/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
