@@ -5,7 +5,6 @@ import Item from "./Item";
 function App() {
   return (
     <div className="App">
-      hepp
       <Router basename="/mytaste2">
         <Routes>
           <Route path="/" element={<Home />} />
