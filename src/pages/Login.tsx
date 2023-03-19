@@ -1,5 +1,5 @@
-import googleLoginButton from './assets/btn_google_signin_dark_normal_web.png';
-import { auth, provider } from './firebase';
+import googleLoginButton from '../assets/btn_google_signin_dark_normal_web.png';
+import { auth, provider } from '../firebase';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
