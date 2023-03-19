@@ -8,6 +8,8 @@ const StyledFooter = styled.div`
   bottom: 0;
   height: 70px;
   background-color: ${(props) => props.theme.separator};
+  background-color: black;
+
   width: 100%;
   display: flex;
   align-items: center;

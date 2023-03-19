@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { getAllItems } from '../api/api.js';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
-import Header from '../components/Header.js';
+import { Header } from '../components/Header.js';
 import styled from 'styled-components';
 import Footer from '../components/Footer.js';
 
@@ -13,7 +13,8 @@ const ContentWrapper = styled.div`
 `;
 
 const PageContent = styled.div`
-  margin: 1rem;
+  margin: 80px 1rem;
+
   display: flex;
   flex-direction: column;
 `;

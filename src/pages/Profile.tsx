@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { useNavigate } from 'react-router';
 import { auth } from '../firebase';
 //import Button from '@material-ui/core/Button';
-import { toast } from 'react-toastify';
+//import { toast } from 'react-toastify';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const UserAvatar = styled.img`
@@ -29,7 +27,7 @@ const Divider = styled.div`
   margin: 2rem 0 2rem 0;
 `;
 
-export const ProfilePage = () => {
+export const Profile = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<any>(null);
 

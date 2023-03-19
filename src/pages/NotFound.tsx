@@ -9,7 +9,7 @@ const StyledPage = styled.div`
   height: 100%;
 `;
 
-const NotFoundPage = () => (
+export const NotFound = () => (
   <StyledPage>
     <h2>Page Not Found, sjø</h2>
     <p>
@@ -17,5 +17,3 @@ const NotFoundPage = () => (
     </p>
   </StyledPage>
 );
-
-export default NotFoundPage;

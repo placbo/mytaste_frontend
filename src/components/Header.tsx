@@ -9,7 +9,8 @@ const StyledHeader = styled.div`
   position: fixed;
   top: 0;
   height: 70px;
-  background-color: ${(props) => props.theme.separator};
+  //background-color: ${(props) => props.theme.separator};
+  background-color: black;
   width: 100%;
   display: flex;
   z-index: 1;
@@ -51,7 +52,7 @@ const UserAvatar = styled.img`
   border-radius: 50%;
 `;
 
-const Header = () => {
+export const Header = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
@@ -85,5 +86,3 @@ const Header = () => {
     </StyledHeader>
   );
 };
-
-export default Header;
