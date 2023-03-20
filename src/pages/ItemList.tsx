@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllItems } from '../api/api.js';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase';
 import { Header } from '../components/Header.js';
 import styled from 'styled-components';
 import Footer from '../components/Footer.js';
@@ -28,18 +26,6 @@ export function ItemList() {
         setItems(result);
       })
       .catch((error) => console.error(error.message));
-  }, []);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-      } else {
-        console.log('user is logged out');
-      }
-    });
   }, []);
 
   return (

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router';
-import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 //import Button from '@material-ui/core/Button';
 //import { toast } from 'react-toastify';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -33,23 +32,7 @@ export const Profile = () => {
 
   const signOut = () => {
     console.log('not implemented');
-
-    // app
-    //   .auth()
-    //   .signOut()
-    //   .then(() => history.push('/'))
-    //   .catch(() => toast.error('Could not log out'));
   };
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        console.log('user is logged out');
-      }
-    });
-  }, []);
 
   return (
     <>

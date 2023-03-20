@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { AiOutlineLogin } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase';
 
 const StyledHeader = styled.div`
   position: fixed;
@@ -53,17 +52,7 @@ const UserAvatar = styled.img`
 `;
 
 export const Header = () => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-      } else {
-        console.log('user is logged out');
-      }
-    });
-  }, []);
+  // const [currentUser, setCurrentUser] = useState<any>(null);
 
   return (
     <StyledHeader>
@@ -71,7 +60,7 @@ export const Header = () => {
         <Logo>MyTaste</Logo>
       </Link>
       {/* <span>{isAdmin && 'ADMIN'}</span> */}
-      {!currentUser ? (
+      {/* {!currentUser ? (
         <Link to="/login">
           <IconWrapper>
             <AiOutlineLogin />
@@ -82,7 +71,7 @@ export const Header = () => {
         <Link to="/profile">
           <UserAvatar src={currentUser.photoURL} />
         </Link>
-      )}
+      )} */}
     </StyledHeader>
   );
 };
