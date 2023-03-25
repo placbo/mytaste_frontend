@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <ToastContainer autoClose={3000} hideProgressBar />
-      <Router basename="/mytaste2">
+      <Router basename="/mytaste">
         <Routes>
           <Route path="/" element={<ItemList />} />
           <Route path="/login" element={<LoginPage />} />
