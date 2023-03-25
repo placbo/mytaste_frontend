@@ -32,20 +32,23 @@ export function ItemList() {
     <ContentWrapper>
       <Header />
       <PageContent>
-        {items.map((item: any) => (
-          <Link key={item.title} to={'/item/' + item.id}>
-            <div>
-              <div>{item.image && <img src={item.image} className="card-img-top" alt="image" height={'100px'} />}</div>
+        {items &&
+          items.map((item: any) => (
+            <Link key={item.title} to={'/item/' + item.id}>
               <div>
-                <h4>{item.title}</h4>
-                {/* <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} /> */}
                 <div>
-                  {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'vote' : 'votes'}
+                  {item.image && <img src={item.image} className="card-img-top" alt="image" height={'100px'} />}
+                </div>
+                <div>
+                  <h4>{item.title}</h4>
+                  {/* <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} /> */}
+                  <div>
+                    {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'vote' : 'votes'}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
       </PageContent>
       <Footer />
     </ContentWrapper>
