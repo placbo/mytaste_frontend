@@ -1,6 +1,7 @@
 import { ITEMS_URL, USE_MOCK_DATA } from '../constants';
 import { axiosGetHandler } from './apiUtils';
 import { Dispatch, SetStateAction } from 'react';
+import { ItemsResponse } from '../types.js';
 
 // console.log(process.env.REACT_APP_MOCK_API);
 
@@ -55,7 +56,7 @@ import { Dispatch, SetStateAction } from 'react';
 //   );
 // };
 
-export const getAllItems = (setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>) => {
+export const getAllItems = (setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>): Promise<ItemsResponse> => {
   if (USE_MOCK_DATA) {
     return new Promise((resolve) => {
       console.log('Mock retrieving list');

@@ -3,54 +3,62 @@ import { Link } from 'react-router-dom';
 import { getAllItems } from '../api/api.js';
 import { Header } from '../components/Header.js';
 import styled from 'styled-components';
-import Footer from '../components/Footer.js';
+import Rating from '@mui/material/Rating';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Item } from '../types.js';
+import { Box, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from '@mui/material';
+import placeholderItemImage from '../resources/images/placeholder.png';
+import { THUMBNAIL_URL } from '../constants.js';
 
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const PageContent = styled.div`
-  margin: 80px 1rem;
-
-  display: flex;
-  flex-direction: column;
-`;
+// const RatingLabel = styled.span`
+//   margin-left: 1rem;
+//   font-style: italic;
+//   color: grey;
+// `;
 
 export function ItemList() {
-  const [items, setItems] = useState<any>([]);
+  const [items, setItems] = useState<Item[]>([]);
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [apiError, setApiError] = useState<Error | undefined>(undefined);
 
   useEffect(() => {
-    getAllItems()
+    getAllItems(setApiError, setIsWaiting)
       .then((result) => {
-        setItems(result);
+        setItems(result.items);
       })
       .catch((error) => console.error(error.message));
   }, []);
 
+  if (isWaiting) return <CircularProgress />;
+
   return (
-    <ContentWrapper>
+    <>
       <Header />
-      <PageContent>
-        {items &&
-          items.map((item: any) => (
-            <Link key={item.title} to={'/item/' + item.id}>
-              <div>
-                <div>
-                  {item.image && <img src={item.image} className="card-img-top" alt="image" height={'100px'} />}
-                </div>
-                <div>
-                  <h4>{item.title}</h4>
-                  {/* <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} /> */}
-                  <div>
+      {items &&
+        items.map((item: any) => (
+          // <Link key={item.id} to={'/item/' + item.id}>
+          <Card sx={{ minWidth: 200, display: 'flex', margin: '1rem' }}>
+            <CardMedia
+              component="img"
+              sx={{ maxWidth: 150 }}
+              image={item.image ? `${THUMBNAIL_URL}${item.image}` : placeholderItemImage}
+              alt="image"
+            />
+            <CardContent>
+              <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+                <Typography component="div" variant="h5" gutterBottom>
+                  {item.title}
+                </Typography>
+                <Box sx={{ display: 'flex', gap: '1rem' }}>
+                  <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} />
+                  <Typography variant="subtitle1" color="text.secondary" component="span">
                     {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'vote' : 'votes'}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-      </PageContent>
-      <Footer />
-    </ContentWrapper>
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        ))}
+    </>
   );
 }
