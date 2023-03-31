@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { getAllItems } from '../api/api.js';
 import { Header } from '../components/Header.js';
-import styled from 'styled-components';
 import Rating from '@mui/material/Rating';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Item } from '../types.js';
-import { Box, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { THUMBNAIL_URL } from '../constants.js';
 
@@ -41,7 +39,7 @@ export function ItemList() {
             <CardMedia
               component="img"
               sx={{ maxWidth: 150 }}
-              image={item.image ? `${THUMBNAIL_URL}${item.image}` : placeholderItemImage}
+              image={item.imageURL ? `${THUMBNAIL_URL}${item.imageURL}` : placeholderItemImage}
               alt="image"
             />
             <CardContent>

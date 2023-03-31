@@ -2,7 +2,9 @@ export interface Item {
   id: string;
   title: string;
   comment: string;
-  image: string;
+  creator: string;
+  created: string;
+  imageURL: string;
   averageRating: number;
   averageRatingCount: number;
 }
