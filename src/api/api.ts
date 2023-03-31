@@ -1,4 +1,4 @@
-import { ITEMS_URL, USE_MOCK_DATA } from '../constants';
+import { ITEMS_URL } from '../constants';
 import { axiosGetHandler } from './apiUtils';
 import { Dispatch, SetStateAction } from 'react';
 import { ItemsResponse } from '../types.js';
@@ -57,60 +57,7 @@ import { ItemsResponse } from '../types.js';
 // };
 
 export const getAllItems = (setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>): Promise<ItemsResponse> => {
-  if (USE_MOCK_DATA) {
-    return new Promise((resolve) => {
-      console.log('Mock retrieving list');
-      let MOCK_DATA = [
-        {
-          id: '1oS3BIojyckicgzOhXoS',
-          title: 'Item 1',
-          comment: 'fsdfsdfsdf',
-          image: 'https://brands-b.prod.onewp.net/app/uploads/sites/44/2019/08/cheez-chruncherz-600x600.png',
-          averageRating: 4,
-          averageRatingCount: 12,
-        },
-        {
-          id: 'fsdfsdfsdfsdfsdfs',
-          title: 'Item 1.5',
-          comment: 'fsdfsdfsdf',
-          tags: ['Junkfood', 'Burger'],
-          image: 'https://brands-b.prod.onewp.net/app/uploads/sites/44/2019/08/cheez-chruncherz-600x600.png',
-        },
-        {
-          id: 'fsdfsdfsdfsdfsdf2s',
-          title: 'Item 1.6',
-          comment:
-            'fsdfsdfdsfsdsdfjfdks sdfkj fsdkjf sdksdkfj sdkljf sdkljf sdklfj sdklj fsdklj fsdklfj sdk fjsdklfj sdklfj sdklj fsdkljfsdkl gsdklb sd kldsjg sdkg fsdf',
-          tags: ['Junkfood', 'Burger'],
-          image: 'https://brands-b.prod.onewp.net/app/uploads/sites/44/2019/08/cheez-chruncherz-600x600.png',
-          ratings: {
-            'perbjester@gmail.com': null,
-          },
-          averageRating: null,
-          averageRatingCount: 0,
-        },
-        {
-          id: '2oS3BIojyckicgzOhXoS',
-          title: 'Item 2',
-          comment: 'jadda',
-          image: 'https://brands-b.prod.onewp.net/app/uploads/sites/44/2019/08/cheez-chruncherz-600x600.png',
-          averageRating: null,
-          averageRatingCount: 423,
-        },
-        {
-          id: '3oS3BIojyckicgzOhXoS',
-          title: 'Item 3',
-          comment: 'joda',
-          image: 'https://brands-b.prod.onewp.net/app/uploads/sites/44/2019/08/cheez-chruncherz-600x600.png',
-          averageRating: 5,
-          averageRatingCount: 1,
-        },
-      ];
-      resolve(MOCK_DATA);
-    });
-  } else {
-    return axiosGetHandler(ITEMS_URL, setError, setLoading);
-  }
+  return axiosGetHandler(ITEMS_URL, setError, setLoading);
 };
 
 // export const updateItem = (item) => {
