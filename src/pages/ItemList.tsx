@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { getAllItems } from '../api/api.js';
+import { getAllItems, getItems } from '../api/api.js';
 import { Header } from '../components/Header.js';
 import Rating from '@mui/material/Rating';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Item } from '../types.js';
-import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { THUMBNAIL_URL } from '../constants.js';
+import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
 
 // const RatingLabel = styled.span`
 //   margin-left: 1rem;
@@ -17,22 +18,42 @@ import { THUMBNAIL_URL } from '../constants.js';
 export function ItemList() {
   const [items, setItems] = useState<Item[]>([]);
   const [isWaiting, setIsWaiting] = useState(false);
+  const [page, setPage] = useState<number>(1);
   const [apiError, setApiError] = useState<Error | undefined>(undefined);
 
   useEffect(() => {
-    getAllItems(setApiError, setIsWaiting)
-      .then((result) => {
-        setItems(result.items);
-      })
-      .catch((error) => console.error(error.message));
-  }, []);
+    const geItemsWrapper = async () => {
+      setApiError(undefined);
+      const result = await getItems(page, DEFAULT_NUMBER_OF_RESULTS, setApiError, setIsWaiting);
+      if (result) {
+        setItems((prevState) => {
+          return [...prevState, ...result.items];
+        });
+      }
+    };
+    geItemsWrapper();
+  }, [page]);
 
-  if (isWaiting) return <CircularProgress />;
+  const triggerNextPageFetch = () => {
+    setPage((prevState: number) => prevState + 1);
+  };
 
   return (
     <>
       <Header />
+      {isWaiting && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+          <CircularProgress />
+        </Box>
+      )}
+      {apiError && (
+        <Alert sx={{ m: 2 }} severity="error">
+          Innlasting av data gikk gæli!
+        </Alert>
+      )}
+
       {items &&
+        items.length > 0 &&
         items.map((item: any) => (
           // <Link key={item.id} to={'/item/' + item.id}>
           <Card sx={{ minWidth: 200, display: 'flex', margin: '1rem' }}>
@@ -57,6 +78,9 @@ export function ItemList() {
             </CardContent>
           </Card>
         ))}
+      <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+        <Button onClick={triggerNextPageFetch}>Vis mer...</Button>
+      </Box>
     </>
   );
 }
