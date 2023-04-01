@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ItemList } from './pages/ItemList';
-import { Item } from './pages/Item';
+import { ItemDetails } from './pages/Item';
 import { LoginPage } from './pages/Login';
 import { ToastContainer } from 'react-toastify';
 import { NotFound } from './pages/NotFound';
@@ -30,7 +30,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ItemList />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/item/:id" element={<Item />} />
+            <Route path="/item/:id" element={<ItemDetails />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>

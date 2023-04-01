@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react';
-import { getAllItems, getItems } from '../api/api.js';
+import { getItems } from '../api/api.js';
 import { Header } from '../components/Header.js';
 import Rating from '@mui/material/Rating';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Item } from '../types.js';
-import { Alert, Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { THUMBNAIL_URL } from '../constants.js';
 import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
+import { Link as RouterLink } from 'react-router-dom';
 
 // const RatingLabel = styled.span`
 //   margin-left: 1rem;
 //   font-style: italic;
 //   color: grey;
+// `;
+
+// const StyledLink = styled(Link)`
+//   text-decoration: none;
 // `;
 
 export function ItemList() {
@@ -54,28 +59,34 @@ export function ItemList() {
 
       {items &&
         items.length > 0 &&
-        items.map((item: any) => (
-          // <Link key={item.id} to={'/item/' + item.id}>
-          <Card sx={{ minWidth: 200, display: 'flex', margin: '1rem' }}>
-            <CardMedia
-              component="img"
-              sx={{ maxWidth: 150 }}
-              image={item.imageURL ? `${THUMBNAIL_URL}${item.imageURL}` : placeholderItemImage}
-              alt="image"
-            />
-            <CardContent>
-              <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
-                <Typography component="div" variant="h5" gutterBottom>
-                  {item.title}
-                </Typography>
-                <Box sx={{ display: 'flex', gap: '1rem' }}>
-                  <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} />
-                  <Typography variant="subtitle1" color="text.secondary" component="span">
-                    {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'vote' : 'votes'}
+        items.map((item: Item) => (
+          <Card sx={{ minWidth: 200, margin: '1rem' }} key={item.itemId}>
+            <CardActionArea
+              component={RouterLink}
+              to={'/item/' + item.itemId}
+              sx={{ display: 'flex', justifyContent: 'start' }}>
+              <CardMedia
+                component="img"
+                sx={{ maxWidth: 150 }}
+                image={item.imageURL ? `${THUMBNAIL_URL}${item.imageURL}` : placeholderItemImage}
+                alt="image"
+              />
+              <CardContent>
+                <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+                  <Typography component="div" variant="h5" gutterBottom>
+                    {item.title}
                   </Typography>
+                  {item.averageRating && (
+                    <Box sx={{ display: 'flex', gap: '1rem' }}>
+                      <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} />
+                      <Typography variant="subtitle1" color="text.secondary" component="span">
+                        {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'vote' : 'votes'}
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
-              </Box>
-            </CardContent>
+              </CardContent>
+            </CardActionArea>
           </Card>
         ))}
       <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
