@@ -18,7 +18,6 @@ import { FC, useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
-import { Header } from '../components/Header';
 import { IMAGES_URL } from '../constants';
 import { Item, Review, Tag } from '../types';
 import placeholderItemImage from '../resources/images/placeholder.png';
@@ -116,7 +115,9 @@ export const ItemDetails: FC = () => {
               </Stack>
             </CardContent>
             <CardActions>
+              <Button>Ranger</Button>
               <Button disabled>Rediger</Button>
+              <Button disabled>Slett</Button>
             </CardActions>
           </Card>
         )}

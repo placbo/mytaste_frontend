@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { getItems } from '../api/api.js';
-import { Header } from '../components/Header.js';
 import Rating from '@mui/material/Rating';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Item } from '../types.js';
@@ -9,18 +8,7 @@ import placeholderItemImage from '../resources/images/placeholder.png';
 import { THUMBNAIL_URL } from '../constants.js';
 import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
 import { Link as RouterLink } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
 import { AuthContext } from '../App.js';
-
-// const RatingLabel = styled.span`
-//   margin-left: 1rem;
-//   font-style: italic;
-//   color: grey;
-// `;
-
-// const StyledLink = styled(Link)`
-//   text-decoration: none;
-// `;
 
 export function ItemList() {
   const [items, setItems] = useState<Item[]>([]);
@@ -82,7 +70,7 @@ export function ItemList() {
                     <Box sx={{ display: 'flex', gap: '1rem' }}>
                       <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} />
                       <Typography variant="subtitle1" color="text.secondary" component="span">
-                        {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'vote' : 'votes'}
+                        {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'stemme' : 'stemmer'}
                       </Typography>
                     </Box>
                   )}
@@ -94,19 +82,6 @@ export function ItemList() {
       <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
         <Button onClick={triggerNextPageFetch}>Vis mer...</Button>
       </Box>
-      {isUserLoggedIn && (
-        <Fab
-          aria-label="add"
-          size="large"
-          color="secondary"
-          sx={{
-            position: 'fixed',
-            bottom: 16,
-            right: 16,
-          }}>
-          <AddIcon />
-        </Fab>
-      )}
     </>
   );
 }
