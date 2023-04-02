@@ -20,13 +20,13 @@ import { useParams } from 'react-router-dom';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
 import { Header } from '../components/Header';
 import { IMAGES_URL } from '../constants';
-import { Item, Review } from '../types';
+import { Item, Review, Tag } from '../types';
 import placeholderItemImage from '../resources/images/placeholder.png';
 
 export const ItemDetails: FC = () => {
   const { id } = useParams();
   const [item, setItem] = useState<Item | undefined>(undefined);
-  const [tags, setTags] = useState<String[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [reviews, seReviews] = useState<Review[]>([]);
 
   const [isWaiting, setIsWaiting] = useState(false);
@@ -77,7 +77,7 @@ export const ItemDetails: FC = () => {
             <CardHeader title={item.title}></CardHeader>
             <CardContent>
               <Stack direction="row-reverse" spacing={1}>
-                {tags && tags.map((tag) => <Chip label={tag} variant="outlined" />)}
+                {tags && tags.map((tag) => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
               </Stack>
             </CardContent>
             <CardMedia
@@ -96,7 +96,7 @@ export const ItemDetails: FC = () => {
               <Stack direction="column" spacing={2}>
                 {reviews &&
                   reviews.map((review) => (
-                    <Card sx={{ backgroundColor: '#333333' }}>
+                    <Card key={review.reviewId} sx={{ backgroundColor: '#333333' }}>
                       <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Rating
                           sx={{ mb: 2 }}

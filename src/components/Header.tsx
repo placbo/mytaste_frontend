@@ -1,34 +1,45 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import { Link } from 'react-router-dom';
-import styled from '@emotion/styled';
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../App';
+import logo from '../assets/mytaste.png';
 
 export const Header = () => {
-  // const [currentUser, setCurrentUser] = useState<any>(null);
+  //const [currentUser, setCurrentUser] = useState<any>(null);
+  const { isUserLoggedIn, setIsUserLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  // const StyledLink = styled(Link)`
-  //   text-decoration: none;
-  //   color: red;
-  // `;
+  function logout() {
+    setIsUserLoggedIn(undefined);
+    localStorage.removeItem('token');
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component={Link}
-            to={'/'}
-            color="common.white"
-            sx={{ flexGrow: 1, textDecoration: 'none' }}>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            backgroundColor: 'black',
+            p: 2,
+            borderBottom: '1px solid grey',
+          }}>
+          <Typography variant="h6" component={Link} to={'/'} color="common.white" sx={{ textDecoration: 'none' }}>
             MyTaste
           </Typography>
-          <Button disabled>Login</Button>
+          <img src={logo} height="50px"></img>
+          {!isUserLoggedIn ? (
+            <Button component={Link} to="/login">
+              Log in
+            </Button>
+          ) : (
+            <Button onClick={logout}>Log out</Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

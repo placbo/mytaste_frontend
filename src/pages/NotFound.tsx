@@ -1,19 +1,11 @@
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-
-const StyledPage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-`;
+import { Container, Link, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const NotFound = () => (
-  <StyledPage>
-    <h2>Page Not Found, sjø</h2>
-    <p>
-      <Link to="/">Back to Home</Link>
-    </p>
-  </StyledPage>
+  <Container>
+    <Typography variant="h2">Page Not Found, sjø</Typography>
+    <RouterLink to="/">
+      <Link>Back to Home</Link>
+    </RouterLink>
+  </Container>
 );

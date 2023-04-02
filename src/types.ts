@@ -17,10 +17,12 @@ export interface Review {
   rating: number;
 }
 
-export interface ItemsResponse {
-  items: Item[];
+export interface Tag {
+  tagId: number;
+  itemId: number;
+  tag: string;
 }
 
-export interface ItemResponse {
-  item: Item;
+export interface ItemsResponse {
+  items: Item[];
 }
