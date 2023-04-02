@@ -60,7 +60,6 @@ export const ItemDetails: FC = () => {
 
   return (
     <>
-      <Header />
       {isWaiting && (
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
           <CircularProgress />

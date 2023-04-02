@@ -3,15 +3,13 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../App';
 import logo from '../assets/mytaste.png';
 
 export const Header = () => {
-  //const [currentUser, setCurrentUser] = useState<any>(null);
   const { isUserLoggedIn, setIsUserLoggedIn } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   function logout() {
     setIsUserLoggedIn(undefined);

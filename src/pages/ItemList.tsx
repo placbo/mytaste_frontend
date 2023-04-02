@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getItems } from '../api/api.js';
 import { Header } from '../components/Header.js';
 import Rating from '@mui/material/Rating';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Item } from '../types.js';
-import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Fab, Typography } from '@mui/material';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { THUMBNAIL_URL } from '../constants.js';
 import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
 import { Link as RouterLink } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
+import { AuthContext } from '../App.js';
 
 // const RatingLabel = styled.span`
 //   margin-left: 1rem;
@@ -25,6 +27,7 @@ export function ItemList() {
   const [isWaiting, setIsWaiting] = useState(false);
   const [page, setPage] = useState<number>(1);
   const [apiError, setApiError] = useState<Error | undefined>(undefined);
+  const { isUserLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     const geItemsWrapper = async () => {
@@ -45,7 +48,6 @@ export function ItemList() {
 
   return (
     <>
-      <Header />
       {isWaiting && (
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
           <CircularProgress />
@@ -73,7 +75,7 @@ export function ItemList() {
               />
               <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
-                  <Typography component="div" variant="h5" gutterBottom>
+                  <Typography component="div" variant="h6" gutterBottom>
                     {item.title}
                   </Typography>
                   {item.averageRating && (
@@ -92,6 +94,19 @@ export function ItemList() {
       <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
         <Button onClick={triggerNextPageFetch}>Vis mer...</Button>
       </Box>
+      {isUserLoggedIn && (
+        <Fab
+          aria-label="add"
+          size="large"
+          color="secondary"
+          sx={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+          }}>
+          <AddIcon />
+        </Fab>
+      )}
     </>
   );
 }
