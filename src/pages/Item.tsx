@@ -14,16 +14,19 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
 import { IMAGES_URL } from '../constants';
 import { Item, Review, Tag } from '../types';
 import placeholderItemImage from '../resources/images/placeholder.png';
+import { AuthContext } from '../App';
 
 export const ItemDetails: FC = () => {
   const { id } = useParams();
+  const { isUserLoggedIn } = useContext(AuthContext);
+
   const [item, setItem] = useState<Item | undefined>(undefined);
   const [tags, setTags] = useState<Tag[]>([]);
   const [reviews, seReviews] = useState<Review[]>([]);
@@ -32,13 +35,6 @@ export const ItemDetails: FC = () => {
   const [apiError, setApiError] = useState<Error | undefined>(undefined);
   const [isWaitingTags, setIsWaitingTags] = useState(false);
   const [isWaitingReviews, setIsWaitingReviews] = useState(false);
-
-  // if (result.ratings && Object.values(result.ratings).length > 0) {
-  //   if (currentUser && result.ratings[currentUser.email]) {
-  //     setUserRating(result.ratings[currentUser.email]);
-  //     setHasRatingForCurrentUser(true);
-  //   }
-  // }
 
   useEffect(() => {
     const geItemWrapper = async () => {
@@ -115,9 +111,13 @@ export const ItemDetails: FC = () => {
               </Stack>
             </CardContent>
             <CardActions>
-              <Button>Ranger</Button>
-              <Button disabled>Rediger</Button>
-              <Button disabled>Slett</Button>
+              <Button disabled>Ranger</Button>
+              {isUserLoggedIn && (
+                <Button component={Link} to={`/item/${id}/edit`}>
+                  Rediger
+                </Button>
+              )}
+              {isUserLoggedIn && <Button disabled>Slett</Button>}
             </CardActions>
           </Card>
         )}

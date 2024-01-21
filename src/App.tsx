@@ -12,8 +12,9 @@ import { createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createContext, useEffect, useState } from 'react';
 import { Header } from './components/Header';
+import { ManageItemPage } from './pages/ManageItemPage';
 
-export const AuthContext = createContext<any>({} as any); //jukser (https://stackoverflow.com/questions/61333188/react-typescript-avoid-context-default-value)
+export const AuthContext = createContext<any>({} as any); //jukser!: (https://stackoverflow.com/questions/61333188/react-typescript-avoid-context-default-value)
 
 const darkTheme = createTheme({
   palette: {
@@ -54,6 +55,8 @@ function App() {
               <Route path="/" element={<ItemList />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/item/:id" element={<ItemDetails />} />
+              <Route path="/item/:id/edit" element={<ManageItemPage />} />
+              <Route path="/newitem" element={<ManageItemPage />} />
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </Router>
