@@ -3,7 +3,19 @@ import { getItems } from '../api/api.js';
 import Rating from '@mui/material/Rating';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Item } from '../types.js';
-import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Fab, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Chip,
+  Fab,
+  Stack,
+  Typography,
+} from '@mui/material';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { THUMBNAIL_URL } from '../constants.js';
 import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
@@ -72,6 +84,9 @@ export function ItemList() {
                       <Typography variant="subtitle1" color="text.secondary" component="span">
                         {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'stemme' : 'stemmer'}
                       </Typography>
+                      {/* <Stack direction="row-reverse" spacing={1}>
+                        {tags && tags.map((tag) => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
+                      </Stack> */}
                     </Box>
                   )}
                 </Box>

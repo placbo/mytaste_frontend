@@ -49,7 +49,7 @@ function App() {
         <ThemeProvider theme={darkTheme}>
           <CssBaseline />
 
-          <Router basename="/mytaste">
+          <Router basename="/mytaste/">
             <Header />
             <Routes>
               <Route path="/" element={<ItemList />} />

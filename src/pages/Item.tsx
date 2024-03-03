@@ -16,16 +16,18 @@ import {
 } from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
 
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
-import { IMAGES_URL } from '../constants';
+import { IMAGES_URL, ITEMS_URL } from '../constants';
 import { Item, Review, Tag } from '../types';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { AuthContext } from '../App';
+import { axiosDeleteHandler } from '../api/apiUtils';
 
 export const ItemDetails: FC = () => {
   const { id } = useParams();
   const { isUserLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [item, setItem] = useState<Item | undefined>(undefined);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -35,6 +37,8 @@ export const ItemDetails: FC = () => {
   const [apiError, setApiError] = useState<Error | undefined>(undefined);
   const [isWaitingTags, setIsWaitingTags] = useState(false);
   const [isWaitingReviews, setIsWaitingReviews] = useState(false);
+  const [deletingError, setDeletingError] = useState<Error | undefined>(undefined);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const geItemWrapper = async () => {
@@ -53,6 +57,15 @@ export const ItemDetails: FC = () => {
     geItemWrapper();
   }, [id]);
 
+  async function deleteItem(): Promise<void> {
+    const confirmed = window.confirm('Slette?');
+    if (confirmed) {
+      const url = `${ITEMS_URL}/${id}`;
+      await axiosDeleteHandler(url, setDeletingError, setIsDeleting);
+      navigate('/');
+    }
+  }
+
   return (
     <>
       {isWaiting && (
@@ -60,9 +73,19 @@ export const ItemDetails: FC = () => {
           <CircularProgress />
         </Box>
       )}
+      {isDeleting && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+          <CircularProgress />
+        </Box>
+      )}
       {apiError && (
         <Alert sx={{ m: 2 }} severity="error">
           Innlasting av data gikk gæli!
+        </Alert>
+      )}
+      {deletingError && (
+        <Alert sx={{ m: 2 }} severity="error">
+          Sletting gikk galt!
         </Alert>
       )}
       <Container maxWidth="sm">
@@ -117,7 +140,7 @@ export const ItemDetails: FC = () => {
                   Rediger
                 </Button>
               )}
-              {isUserLoggedIn && <Button disabled>Slett</Button>}
+              {isUserLoggedIn && <Button onClick={deleteItem}>Slett</Button>}
             </CardActions>
           </Card>
         )}

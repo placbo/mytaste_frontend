@@ -2,7 +2,7 @@
   "name": "mytaste",
   "version": "0.0.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "mytaste/",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
