@@ -9,6 +9,10 @@ export interface Item {
   averageRatingCount?: number;
 }
 
+export interface ItemsResponse {
+  items: Item[];
+}
+
 export interface Review {
   reviewId: number;
   itemId: number;
@@ -21,8 +25,4 @@ export interface Tag {
   tagId: number;
   itemId: number;
   tag: string;
-}
-
-export interface ItemsResponse {
-  items: Item[];
 }

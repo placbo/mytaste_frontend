@@ -2,7 +2,7 @@
   "name": "mytaste",
   "version": "0.0.0",
   "private": true,
-  "homepage": "mytaste/",
+  "homepage": "mytaste",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
@@ -27,7 +27,13 @@
     "@types/react-dom": "^18.2.18",
     "@types/react-icons": "^3.0.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "msw": "^2.3.5",
     "typescript": "^5.3.3",
     "vite": "^5.0.11"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

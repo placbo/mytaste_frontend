@@ -24,7 +24,12 @@ const darkTheme = createTheme({
 
 const getTokenExpiry = (token: string | null): number => {
   if (!token) return 0;
-  return JSON.parse(atob(token.split('.')[1])).exp;
+  try {
+    return JSON.parse(atob(token.split('.')[1])).exp;
+    //todo! sjekk om det funker . finn eksempel. https://stackoverflow.com/questions/72866826/decoding-a-jwt-token-on-frontend-with-atob-gives-me-failed-to-execute-atob-on
+  } catch (error) {
+    return 0;
+  }
 };
 
 const isTokenExpired = (expiry: number): boolean => {
@@ -49,7 +54,7 @@ function App() {
         <ThemeProvider theme={darkTheme}>
           <CssBaseline />
 
-          <Router basename="/mytaste/">
+          <Router basename="/mytaste">
             <Header />
             <Routes>
               <Route path="/" element={<ItemList />} />
