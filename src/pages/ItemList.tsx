@@ -1,26 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
-import { getItems } from '../api/api.js';
-import Rating from '@mui/material/Rating';
+import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Item } from '../types.js';
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Chip,
-  Fab,
-  Stack,
-  Typography,
-} from '@mui/material';
-import placeholderItemImage from '../resources/images/placeholder.png';
-import { THUMBNAIL_URL } from '../constants.js';
-import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
+import Rating from '@mui/material/Rating';
+import { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { getItems } from '../api/api.js';
+import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
 import { AuthContext } from '../App.js';
+import { THUMBNAIL_URL } from '../constants.js';
+import placeholderItemImage from '../resources/images/placeholder.png';
+import { Item } from '../types.js';
 
 export function ItemList() {
   const [items, setItems] = useState<Item[]>([]);

@@ -10,19 +10,18 @@ import {
   Chip,
   CircularProgress,
   Container,
-  Rating,
   Stack,
-  Typography,
 } from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { getItem, getItemReviews, getItemTags } from '../api/api';
-import { IMAGES_URL, ITEMS_URL } from '../constants';
-import { Item, Review, Tag } from '../types';
-import placeholderItemImage from '../resources/images/placeholder.png';
 import { AuthContext } from '../App';
+import { getItem, getItemReviews, getItemTags } from '../api/api';
 import { axiosDeleteHandler } from '../api/apiUtils';
+import { IMAGES_URL, ITEMS_URL } from '../constants';
+import placeholderItemImage from '../resources/images/placeholder.png';
+import { Item, Review, Tag } from '../types';
+import { ReviewList } from './reviewList';
 
 export const ItemDetails: FC = () => {
   const { id } = useParams();
@@ -34,7 +33,9 @@ export const ItemDetails: FC = () => {
   const [reviews, seReviews] = useState<Review[]>([]);
 
   const [isWaiting, setIsWaiting] = useState(false);
-  const [apiError, setApiError] = useState<Error | undefined>(undefined);
+  const [itemApiError, setItemApiError] = useState<Error | undefined>(undefined);
+  const [reviewsApiError, setReviewsApiError] = useState<Error | undefined>(undefined);
+  const [tagsApiError, setTagsApiError] = useState<Error | undefined>(undefined);
   const [isWaitingTags, setIsWaitingTags] = useState(false);
   const [isWaitingReviews, setIsWaitingReviews] = useState(false);
   const [deletingError, setDeletingError] = useState<Error | undefined>(undefined);
@@ -43,14 +44,15 @@ export const ItemDetails: FC = () => {
   useEffect(() => {
     const geItemWrapper = async () => {
       if (id && Number.isInteger(+id)) {
-        setApiError(undefined);
-        const result = await getItem(+id, setApiError, setIsWaiting);
+        setItemApiError(undefined);
+        const result = await getItem(+id, setItemApiError, setIsWaiting);
         setItem(result);
 
-        const tags = await getItemTags(+id, null, setIsWaitingTags);
+        setItemApiError(undefined);
+        const tags = await getItemTags(+id, setTagsApiError, setIsWaitingTags);
         setTags(tags);
 
-        const reviews = await getItemReviews(+id, null, setIsWaitingReviews);
+        const reviews = await getItemReviews(+id, setReviewsApiError, setIsWaitingReviews);
         seReviews(reviews);
       }
     };
@@ -78,7 +80,7 @@ export const ItemDetails: FC = () => {
           <CircularProgress />
         </Box>
       )}
-      {apiError && (
+      {itemApiError && (
         <Alert sx={{ m: 2 }} severity="error">
           Innlasting av data gikk gæli!
         </Alert>
@@ -93,6 +95,12 @@ export const ItemDetails: FC = () => {
           <Card sx={{ m: 2 }}>
             <CardHeader title={item.title}></CardHeader>
             <CardContent>
+              {isWaitingTags && <CircularProgress />}
+              {tagsApiError && (
+                <Alert sx={{ m: 2 }} severity="warning">
+                  Får ikke tak i emneknagger
+                </Alert>
+              )}
               <Stack direction="row-reverse" spacing={1}>
                 {tags && tags.map((tag) => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
               </Stack>
@@ -103,35 +111,13 @@ export const ItemDetails: FC = () => {
               image={item.imageURL ? `${IMAGES_URL}${item.imageURL}` : placeholderItemImage}
               alt="image"></CardMedia>
             <CardContent>
-              {isWaitingTags && <CircularProgress />}
-              {apiError && (
+              {isWaitingReviews && <CircularProgress />}
+              {reviewsApiError && (
                 <Alert sx={{ m: 2 }} severity="warning">
-                  Får ikke tak i emneknagger
+                  Får ikke tak i omtaler
                 </Alert>
               )}
-
-              <Stack direction="column" spacing={2}>
-                {reviews &&
-                  reviews.map((review) => (
-                    <Card key={review.reviewId} sx={{ backgroundColor: '#333333' }}>
-                      <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Rating
-                          sx={{ mb: 2 }}
-                          name="simple-controlled"
-                          precision={0.5}
-                          readOnly
-                          value={review.rating}
-                        />
-                        <Typography variant="body1" gutterBottom>
-                          {review.comment}
-                        </Typography>
-                        <Typography variant="body2" sx={{ mt: 1 }}>
-                          {review.user}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  ))}
-              </Stack>
+              <ReviewList reviews={reviews} />
             </CardContent>
             <CardActions>
               <Button disabled>Ranger</Button>

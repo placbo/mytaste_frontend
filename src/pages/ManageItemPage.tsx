@@ -1,27 +1,20 @@
 import {
   Alert,
   Box,
-  Button,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
-  CardMedia,
-  Chip,
   CircularProgress,
-  Container,
-  Rating,
-  Stack,
-  Typography,
+  Container
 } from '@mui/material';
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
-import { ItemForm } from '../components/ItemForm';
-import { IMAGES_URL, ITEMS_URL } from '../constants';
-import { Item, ItemsResponse, Review, Tag } from '../types';
 import { axiosPostHandler } from '../api/apiUtils';
+import { ItemForm } from '../components/ItemForm';
+import { ITEMS_URL } from '../constants';
+import { Item, Review, Tag } from '../types';
 
 export const ManageItemPage: FC = () => {
   const { id } = useParams();
