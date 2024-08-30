@@ -21,7 +21,7 @@ import { axiosDeleteHandler } from '../api/apiUtils';
 import { IMAGES_URL, ITEMS_URL } from '../constants';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { Item, Review, Tag } from '../types';
-import { ReviewList } from './reviewList';
+import { ReviewList } from './ReviewList';
 
 export const ItemDetails: FC = () => {
   const { id } = useParams();
