@@ -14,6 +14,7 @@ import { ItemList } from './pages/ItemList';
 import { LoginPage } from './pages/Login';
 import { ManageItemPage } from './pages/ManageItemPage';
 import { NotFound } from './pages/NotFound';
+import { DEFAULT_USER } from './constants';
 
 export const AuthContext = createContext<any>({} as any); //jukser!: (https://stackoverflow.com/questions/61333188/react-typescript-avoid-context-default-value)
 
@@ -39,7 +40,8 @@ const isTokenExpired = (expiry: number): boolean => {
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<string | undefined>(undefined);
-  const authContextValue = { isUserLoggedIn, setIsUserLoggedIn };
+  const [user, setUser] = useState<string | undefined>(DEFAULT_USER);
+  const authContextValue = { isUserLoggedIn, setIsUserLoggedIn, user, setUser };
 
   useEffect(() => {
     const token = localStorage.getItem('token');

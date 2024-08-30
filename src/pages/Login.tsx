@@ -42,7 +42,7 @@ export const LoginPage = () => {
     <Container
       sx={{
         width: '100%',
-        height: '100vh',
+        height: '20vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

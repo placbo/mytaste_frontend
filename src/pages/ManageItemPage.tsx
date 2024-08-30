@@ -1,115 +1,118 @@
-import {
-  Alert,
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
-  Container
-} from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+import { Alert, Box, Card, CardContent, CardHeader, CircularProgress, Container } from '@mui/material';
+import { FC, useContext, useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
 import { axiosPostHandler } from '../api/apiUtils';
 import { ItemForm } from '../components/ItemForm';
 import { ITEMS_URL } from '../constants';
-import { Item, Review, Tag } from '../types';
+import { emptyItemFormFields, ISaveItemResponse, Item, ItemFormFields, Review, Tag } from '../types';
+import { AuthContext } from '../App';
 
 export const ManageItemPage: FC = () => {
-  const { id } = useParams();
+  const { id: itemIdFromPath } = useParams();
   const navigate = useNavigate();
 
-  const emptyItem: Item = {
-    itemId: '',
-    title: '',
-    imageURL: '',
-    creator: 'perbjester@gmail.com',
-  };
+  const [item, setItem] = useState<ItemFormFields>(emptyItemFormFields);
 
-  const [item, setItem] = useState<Item>(emptyItem);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [isLoadingItems, setIsLoadingItems] = useState(false);
+  const [isLoadingTags, setIsLoadingTags] = useState(false);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false);
+  const [loadItemsError, setLoadItemsError] = useState<Error | undefined>(undefined);
+  const [loadTagsError, setLoadTagsError] = useState<Error | undefined>(undefined);
+  const [loadReviewsError, setLoadReviewsError] = useState<Error | undefined>(undefined);
 
-  const [reviews, seReviews] = useState<Review[]>([]);
-  const [isWaiting, setIsWaiting] = useState(false);
-  const [apiError, setApiError] = useState<Error | undefined>(undefined);
-  const [savingError, setSavingError] = useState<Error | undefined>(undefined);
   const [isSaving, setIsSaving] = useState(false);
-  //  const currentUser = undefined; //TODO: context for bruker-data ??
+  const [savingError, setSavingError] = useState<Error | undefined>(undefined);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const geItemWrapper = async () => {
-      if (id && Number.isInteger(+id)) {
-        setApiError(undefined);
-        const result = await getItem(+id, setApiError, setIsWaiting);
-        setItem(result);
+      if (itemIdFromPath && Number.isInteger(+itemIdFromPath)) {
+        const itemFromApi: ItemFormFields = emptyItemFormFields;
 
-        const tags = await getItemTags(+id, null, setIsWaiting);
-        setTags(tags);
+        setLoadItemsError(undefined);
+        const result = await getItem(+itemIdFromPath, setLoadItemsError, setIsLoadingItems);
+        itemFromApi.title = result.title || '';
+        itemFromApi.description = result.description || '';
 
-        const reviews = await getItemReviews(+id, null, setIsWaiting);
-        seReviews(reviews);
+        setLoadTagsError(undefined);
+        const tags = await getItemTags(+itemIdFromPath, setLoadTagsError, setIsLoadingTags);
+
+        itemFromApi.tags = tags.join(',');
+
+        // TODO: plukk ut bare den reviewen som er koblet til brukeren
+        const reviews: Review[] = await getItemReviews(+itemIdFromPath, setLoadReviewsError, setIsLoadingReviews);
+        const usersReview = reviews.filter((review) => review.user === user);
+        console.log('USERREVIEWS: ', usersReview);
+
+        setItem(itemFromApi);
       }
     };
     geItemWrapper();
-  }, [id]);
+  }, [itemIdFromPath]);
 
-  const handleFormChange = ({ target }: any) => {
-    let insertValue = target.value;
-    if (target.name === 'tags') {
-      insertValue = target.value.split(',');
+  const saveForm = async (dataFromForm: ItemFormFields) => {
+    if (itemIdFromPath) {
+      //updateItem(item);
+      console.log('TODO: Update item');
+    } else {
+      const itemObjectToSave: Item = {
+        title: dataFromForm.title,
+        description: dataFromForm.description,
+        creator: user,
+      };
+      const result: ISaveItemResponse = await axiosPostHandler(
+        `${ITEMS_URL}`,
+        itemObjectToSave,
+        setSavingError,
+        setIsSaving
+      );
+      const newId = result.id;
+
+      const tagsList = dataFromForm.tags.split(',');
+      await axiosPostHandler(`${ITEMS_URL}/${newId}/tags`, { tags: tagsList }, setSavingError, setIsSaving);
+
+      const rewiewToSave: Review = { comment: dataFromForm.review, user: user, rating: dataFromForm.rating };
+      await axiosPostHandler(`${ITEMS_URL}/${newId}/reviews`, rewiewToSave, setSavingError, setIsSaving);
     }
-    setItem({
-      ...item,
-      [target.name]: insertValue,
-    });
+    navigate('/');
   };
 
-  const handleSubmit = async (event: any) => {
-    //if (!formIsValid()) return;
-    event.preventDefault();
-    // if (item.id) {
-    //updateItem(item);
-    //} else {
-    const itemsUrl = `${ITEMS_URL}`;
-    await axiosPostHandler(itemsUrl, item, setSavingError, setIsSaving);
-    navigate('/');
-    // }
-  };
+  if (isLoadingItems || isLoadingTags) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (loadItemsError || loadTagsError) {
+    return (
+      <Alert sx={{ m: 2 }} severity="error">
+        Innlasting av data gikk gæli!
+      </Alert>
+    );
+  }
 
   return (
-    <>
-      {isWaiting && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
-          <CircularProgress />
-        </Box>
-      )}
-      {apiError && (
-        <Alert sx={{ m: 2 }} severity="error">
-          Innlasting av data gikk gæli!
-        </Alert>
-      )}
+    <Container maxWidth="sm">
       {savingError && (
         <Alert sx={{ m: 2 }} severity="error">
           Lagring av data gikk gæli!
         </Alert>
       )}
-      <Container maxWidth="sm">
-        {item && (
-          <Card sx={{ m: 2 }}>
-            <CardHeader title="Legg til ny: "></CardHeader>
-            <CardContent>
-              <ItemForm
-                disabled={isSaving}
-                item={item}
-                onChange={handleFormChange}
-                handleSubmit={handleSubmit}
-                tags={tags}
-              />
-            </CardContent>
-          </Card>
-        )}
-      </Container>
-    </>
+
+      <Card sx={{ m: 2 }}>
+        <CardHeader title={itemIdFromPath ? 'Rediger:' : 'Legg til ny: '}></CardHeader>
+        <CardContent>
+          {itemIdFromPath ? (
+            <div>Skrudd av for redigering enn så lenge</div>
+          ) : (
+            <ItemForm isSaving={isSaving} item={item} saveForm={saveForm} />
+          )}
+        </CardContent>
+      </Card>
+    </Container>
   );
 };

@@ -6,3 +6,4 @@ export const LOGIN_URL = BASE_URL + '/auth/login';
 
 export const IMAGES_URL = BASE_URL + '/images/';
 export const THUMBNAIL_URL = IMAGES_URL + '/thumbs/thumbnail.';
+export const DEFAULT_USER = 'perbjester@gmail.com';
