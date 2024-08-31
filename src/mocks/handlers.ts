@@ -1,5 +1,5 @@
 import { delay, http, HttpResponse } from 'msw';
-import { BASE_URL } from '../constants';
+import { API_BASE_URL } from '../constants';
 import { removeMockItemByIdFromItemList } from './mockHelpers';
 import { mockItems, mockReviews, mockTags } from './mocks';
 
