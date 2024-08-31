@@ -18,9 +18,6 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId }: ItemFormProps) =>
   const [description, setDescription] = useState<string>(item.description || '');
   const [rating, setRating] = useState<number>(item.rating || 0);
   const [review, setRewiev] = useState<string>(item.review || '');
-  const [saveImageError, setSaveImageError] = useState<Error | undefined>(undefined);
-
-  const navigate = useNavigate();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -35,12 +32,6 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId }: ItemFormProps) =>
 
   return (
     <form className="itemform" onSubmit={handleSubmit}>
-      <Grid container alignItems="center" justifyContent="center" sx={{ mb: 2 }}>
-        <Grid item>
-          <AddImageComponent itemId={itemId} setError={setSaveImageError}></AddImageComponent>
-        </Grid>
-      </Grid>
-
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <TextField
           id="title"
@@ -107,15 +98,6 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId }: ItemFormProps) =>
           <Grid item>
             <Button type="submit" variant="contained" color="primary" sx={{ ml: 2 }}>
               {itemId ? 'Oppdater felter' : 'Lagre før du legger til bilde'}
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{ ml: 2 }}
-              onClick={() => {
-                navigate('/');
-              }}>
-              {'Lukk'}
             </Button>
           </Grid>
         </Grid>

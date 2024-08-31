@@ -2,11 +2,12 @@ import { Dispatch, FC, SetStateAction, useState, ChangeEvent } from 'react';
 
 import styled from '@emotion/styled';
 import AddAPhoto from '@mui/icons-material/AddAPhoto';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
 import { IMAGE_UPLOAD_URL, THUMBNAIL_URL } from '../constants';
 import axios from 'axios';
+import { Label } from '@mui/icons-material';
 
 const StyledAddImageWrapper = styled.div`
   height: 10rem;
@@ -21,10 +22,9 @@ const StyledImage = styled.img`
   height: 100%;
   width: 100%;
   object-fit: cover;
-  border: 1px solid red;
 `;
 
-const maxFileSizeMb = 4 * 1024 * 1024;
+const maxFileSizeMb = 6 * 1024 * 1024;
 
 const uploadImage = async (
   file: File,
@@ -51,15 +51,18 @@ const uploadImage = async (
 interface Props {
   itemId: string;
   setError: Dispatch<SetStateAction<Error | undefined>>;
+  setSuccess: Dispatch<SetStateAction<boolean>>;
 }
 
-export const AddImageComponent: FC<Props> = ({ itemId, setError }) => {
+export const AddImageComponent: FC<Props> = ({ itemId, setError, setSuccess }) => {
   const [imageFileName, setImageFileName] = useState<string>('');
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const handleFileUpload = async (file: File | null) => {
+    setSuccess(false);
     if (file && file?.size < maxFileSizeMb) {
       const generatedFileName = await uploadImage(file, itemId, setError, setIsUploadingImage);
+      setSuccess(true);
       generatedFileName && setImageFileName(generatedFileName);
     } else {
       setError(new Error('For stor fil'));
@@ -77,18 +80,20 @@ export const AddImageComponent: FC<Props> = ({ itemId, setError }) => {
           //onError={(event: any) => (event.target.src = personPlaceholderImage)}
         />
       ) : (
-        <IconButton disabled={!itemId} size="large" color="primary" aria-label="upload picture" component="label">
-          <input
-            id="file-upload"
-            hidden
-            accept="image/png, image/gif, image/jpeg"
-            type="file"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              handleFileUpload(event.target.files && event.target.files[0]);
-            }}
-          />
-          <AddAPhoto fontSize="large" />
-        </IconButton>
+        <>
+          <IconButton disabled={!itemId} size="large" color="primary" aria-label="upload picture" component="label">
+            <input
+              id="file-upload"
+              hidden
+              accept="image/png, image/gif, image/jpeg"
+              type="file"
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                handleFileUpload(event.target.files && event.target.files[0]);
+              }}
+            />
+            <AddAPhoto fontSize="large" />
+          </IconButton>
+        </>
       )}
     </StyledAddImageWrapper>
   );

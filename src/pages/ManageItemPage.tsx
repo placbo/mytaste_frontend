@@ -1,10 +1,22 @@
-import { Alert, Box, Card, CardContent, CardHeader, CircularProgress, Container } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  Container,
+  Grid,
+  Typography,
+} from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
 import { axiosPostHandler } from '../api/apiUtils';
 import { AuthContext } from '../App';
+import { AddImageComponent } from '../components/AddImageComponent';
 import { ItemForm } from '../components/ItemForm';
 import { ITEMS_URL } from '../constants';
 import { emptyItemFormFields, ISaveItemResponse, Item, ItemFormFields, Review } from '../types';
@@ -20,12 +32,15 @@ export const ManageItemPage: FC = () => {
   const [loadItemsError, setLoadItemsError] = useState<Error | undefined>(undefined);
   const [loadTagsError, setLoadTagsError] = useState<Error | undefined>(undefined);
   const [loadReviewsError, setLoadReviewsError] = useState<Error | undefined>(undefined);
+  const [saveImageError, setSaveImageError] = useState<Error | undefined>(undefined);
+  const [saveImageSuccess, setSaveImageSuccess] = useState<boolean>(false);
 
   const [isSaving, setIsSaving] = useState(false);
   const [savingError, setSavingError] = useState<Error | undefined>(undefined);
   const { user } = useContext(AuthContext);
 
   const [itemId, setItemId] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const geItemWrapper = async () => {
@@ -113,6 +128,31 @@ export const ManageItemPage: FC = () => {
           ) : (
             <ItemForm isSaving={isSaving} item={item} saveForm={saveForm} itemId={itemId} />
           )}
+        </CardContent>
+        <CardContent>
+          <Typography component="legend">Bilde</Typography>
+
+          <AddImageComponent
+            itemId={itemId}
+            setError={setSaveImageError}
+            setSuccess={setSaveImageSuccess}></AddImageComponent>
+
+          {saveImageError && <Alert severity="error">{'Kunne ikke lagre bilde'}</Alert>}
+          {saveImageSuccess && <Alert severity="success">{'Bildet ble lagret'}</Alert>}
+
+          <Grid container justifyContent="right" sx={{ mt: 4 }}>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ ml: 2 }}
+                onClick={() => {
+                  navigate('/');
+                }}>
+                {'Lukk'}
+              </Button>
+            </Grid>
+          </Grid>
         </CardContent>
       </Card>
     </Container>
