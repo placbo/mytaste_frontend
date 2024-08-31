@@ -49,7 +49,7 @@ export const Header = () => {
             <>
               <Button variant="contained" component={Link} to="/newitem">
                 <AddIcon sx={{ mr: 1 }} />
-                Legg til
+                Ny
               </Button>
               <Button onClick={logout}>Logg out</Button>
             </>

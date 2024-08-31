@@ -1,20 +1,26 @@
-import { Box, Button, Rating, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, Rating, TextField, Typography } from '@mui/material';
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ItemFormFields } from '../types';
+import { AddImageComponent } from './AddImageComponent';
 
-interface myProps {
+interface ItemFormProps {
   saveForm: (dataFromForm: ItemFormFields) => void;
   isSaving: boolean;
   item: ItemFormFields;
+  itemId: string;
 }
 
-export const ItemForm = ({ saveForm, isSaving, item }: myProps) => {
+export const ItemForm = ({ saveForm, isSaving, item, itemId }: ItemFormProps) => {
   const [title, setTitle] = useState<string>(item.title || '');
   const [tags, setTags] = useState<string>(item.tags || '');
   const [description, setDescription] = useState<string>(item.description || '');
   const [rating, setRating] = useState<number>(item.rating || 0);
   const [review, setRewiev] = useState<string>(item.review || '');
+  const [saveImageError, setSaveImageError] = useState<Error | undefined>(undefined);
+
+  const navigate = useNavigate();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,6 +35,12 @@ export const ItemForm = ({ saveForm, isSaving, item }: myProps) => {
 
   return (
     <form className="itemform" onSubmit={handleSubmit}>
+      <Grid container alignItems="center" justifyContent="center" sx={{ mb: 2 }}>
+        <Grid item>
+          <AddImageComponent itemId={itemId} setError={setSaveImageError}></AddImageComponent>
+        </Grid>
+      </Grid>
+
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <TextField
           id="title"
@@ -91,9 +103,22 @@ export const ItemForm = ({ saveForm, isSaving, item }: myProps) => {
           disabled={isSaving}
         />
 
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2, alignSelf: 'flex-end' }}>
-          Lagre før du legger til bilde
-        </Button>
+        <Grid container justifyContent="right" sx={{ mt: 4 }}>
+          <Grid item>
+            <Button type="submit" variant="contained" color="primary" sx={{ ml: 2 }}>
+              {itemId ? 'Oppdater felter' : 'Lagre før du legger til bilde'}
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ ml: 2 }}
+              onClick={() => {
+                navigate('/');
+              }}>
+              {'Lukk'}
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </form>
   );
