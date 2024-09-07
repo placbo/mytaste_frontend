@@ -12,9 +12,10 @@ import { Header } from './components/Header';
 import { ItemDetails } from './pages/Item';
 import { ItemList } from './pages/ItemList';
 import { LoginPage } from './pages/Login';
-import { ManageItemPage } from './pages/ManageItemPage';
+import { EditItemPage } from './pages/EditItemPage';
 import { NotFound } from './pages/NotFound';
 import { DEFAULT_USER } from './constants';
+import { AddNewItemPage } from './pages/AddNewItemPage ';
 
 export const AuthContext = createContext<any>({} as any); //jukser!: (https://stackoverflow.com/questions/61333188/react-typescript-avoid-context-default-value)
 
@@ -63,8 +64,8 @@ function App() {
                 <Route path="/" element={<ItemList />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/item/:id" element={<ItemDetails />} />
-                <Route path="/item/:id/edit" element={<ManageItemPage />} />
-                <Route path="/newitem" element={<ManageItemPage />} />
+                <Route path="/item/:id/edit" element={<EditItemPage />} />
+                <Route path="/newitem" element={<AddNewItemPage />} />
                 <Route path="/*" element={<NotFound />} />
               </Routes>
             </Router>

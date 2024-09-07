@@ -24,7 +24,6 @@ export const handlers = [
   }),
 
   http.post(API_BASE_URL + '/items', async (request) => {
-    console.log('XXX', request.params);
     await delay();
     return HttpResponse.json('OK', { status: 201 });
   }),

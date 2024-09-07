@@ -1,26 +1,41 @@
+import { ThumbUp } from '@mui/icons-material';
 import { Box, Button, Grid, Rating, TextField, Typography } from '@mui/material';
 
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ItemFormFields } from '../types';
-import { AddImageComponent } from './AddImageComponent';
+import { Controller, useForm } from 'react-hook-form';
 
 interface ItemFormProps {
   saveForm: (dataFromForm: ItemFormFields) => void;
   isSaving: boolean;
-  item: ItemFormFields;
-  itemId: string;
+  item?: ItemFormFields;
+  itemId?: string | undefined;
+  isDisabled?: boolean;
 }
 
-export const ItemForm = ({ saveForm, isSaving, item, itemId }: ItemFormProps) => {
-  const [title, setTitle] = useState<string>(item.title || '');
-  const [tags, setTags] = useState<string>(item.tags || '');
-  const [description, setDescription] = useState<string>(item.description || '');
-  const [rating, setRating] = useState<number>(item.rating || 0);
-  const [review, setRewiev] = useState<string>(item.review || '');
+export type ItemFormFields = {
+  title: string;
+  tags: string;
+  description: string;
+  rating: number;
+  review: string;
+};
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+export const ItemForm = ({ saveForm, isSaving, item, itemId, isDisabled = false }: ItemFormProps) => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm<ItemFormFields>({
+    defaultValues: {
+      title: item?.title,
+      tags: item?.tags,
+      description: item?.description,
+      rating: item?.rating,
+      review: item?.review,
+    },
+  });
+
+  function onSubmit<Inputs>({ title, tags, description, rating, review }: ItemFormFields) {
     saveForm({
       title,
       tags,
@@ -31,72 +46,65 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId }: ItemFormProps) =>
   }
 
   return (
-    <form className="itemform" onSubmit={handleSubmit}>
+    <form className="itemform" onSubmit={handleSubmit(onSubmit)}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <TextField
           id="title"
+          {...register('title')}
           required
           fullWidth
           label="Produktnavn"
-          onChange={(e) => setTitle(e.target.value)}
           type="text"
-          name="title"
-          value={title}
           margin="normal"
-          disabled={isSaving}
+          disabled={isSaving || isDisabled}
         />
-
         <TextField
           id="description"
+          {...register('description')}
           fullWidth
           label="Beskrivelse?"
-          onChange={(e) => setDescription(e.target.value)}
           type="text"
-          name="description"
-          value={description}
           margin="normal"
-          disabled={isSaving}
+          disabled={isSaving || isDisabled}
         />
-
         <TextField
           id="tags"
+          {...register('tags')}
           fullWidth
           label="Emnekknagger (komma-separert)"
-          onChange={(e) => setTags(e.target.value)}
           type="text"
-          name="tags"
-          value={tags}
           margin="normal"
-          disabled={isSaving}
+          disabled={isSaving || isDisabled}
         />
-
         <Box mb={3} m={1}>
           <Typography component="legend">Rating</Typography>
-          <Rating
-            name="rating"
-            value={rating}
-            disabled={isSaving}
-            onChange={(_, value) => {
-              setRating(value || 0);
-            }}
+          <Controller
+            control={control}
+            name={'rating'}
+            defaultValue={0}
+            render={({ field: { onChange, value } }) => (
+              <Rating name={'rating'} onChange={onChange} value={Number(value)} />
+            )}
           />
         </Box>
-
         <TextField
           id="review"
+          {...register('review')}
           fullWidth
           label="Ka du syns?"
-          onChange={(e) => setRewiev(e.target.value)}
           type="text"
-          name="review"
-          value={review}
           margin="normal"
-          disabled={isSaving}
+          disabled={isSaving || isDisabled}
         />
 
         <Grid container justifyContent="right" sx={{ mt: 4 }}>
           <Grid item>
-            <Button type="submit" variant="contained" color="primary" sx={{ ml: 2 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={isSaving || isDisabled || !isDirty}
+              sx={{ ml: 2 }}>
               {itemId ? 'Oppdater felter' : 'Lagre før du legger til bilde'}
             </Button>
           </Grid>

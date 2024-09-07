@@ -27,22 +27,6 @@ export interface Tag {
   tag: string;
 }
 
-export interface ItemFormFields {
-  title: string;
-  tags: string;
-  description: string;
-  rating: number;
-  review: string;
-}
-
-export const emptyItemFormFields: ItemFormFields = {
-  title: '',
-  tags: '',
-  description: '',
-  rating: 0,
-  review: '',
-};
-
 export interface ISaveItemResponse {
   id: string;
 }

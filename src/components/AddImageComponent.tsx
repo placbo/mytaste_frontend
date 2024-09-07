@@ -49,18 +49,19 @@ const uploadImage = async (
 };
 
 interface Props {
-  itemId: string;
+  itemId: string | undefined;
   setError: Dispatch<SetStateAction<Error | undefined>>;
   setSuccess: Dispatch<SetStateAction<boolean>>;
+  imageFileName: string | undefined;
+  setImageFileName: Dispatch<SetStateAction<string | undefined>>;
 }
 
-export const AddImageComponent: FC<Props> = ({ itemId, setError, setSuccess }) => {
-  const [imageFileName, setImageFileName] = useState<string>('');
+export const AddImageComponent: FC<Props> = ({ itemId, setError, setSuccess, imageFileName, setImageFileName }) => {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const handleFileUpload = async (file: File | null) => {
     setSuccess(false);
-    if (file && file?.size < maxFileSizeMb) {
+    if (itemId && file && file?.size < maxFileSizeMb) {
       const generatedFileName = await uploadImage(file, itemId, setError, setIsUploadingImage);
       setSuccess(true);
       generatedFileName && setImageFileName(generatedFileName);
