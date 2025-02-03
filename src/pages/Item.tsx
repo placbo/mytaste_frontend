@@ -108,7 +108,7 @@ export const ItemDetails: FC = () => {
           <CardMedia
             sx={{ ObjectFit: 'cover', height: '30rem' }}
             component="img"
-            image={item.imageURL ? `${IMAGES_URL}${item.imageURL}` : placeholderItemImage}
+            image={item.imageURL ? `${IMAGES_URL}/${item.imageURL}` : placeholderItemImage}
             alt="image"></CardMedia>
           <CardContent>
             {isLoadingReviews && <CircularProgress />}
