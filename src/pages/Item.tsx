@@ -12,21 +12,21 @@ import {
   Container,
   Stack,
 } from '@mui/material';
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { AuthContext } from '../App';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
 import { axiosDeleteHandler } from '../api/apiUtils';
 import { IMAGES_URL, ITEMS_URL } from '../constants';
+import { useAuth } from '../context/AuthContext';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { Item, Review, Tag } from '../types';
 import { ReviewList } from './ReviewList';
 
 export const ItemDetails: FC = () => {
   const { id } = useParams();
-  const { isUserLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [item, setItem] = useState<Item | undefined>(undefined);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -121,12 +121,12 @@ export const ItemDetails: FC = () => {
           </CardContent>
           <CardActions>
             <Button disabled>Ranger</Button>
-            {isUserLoggedIn && (
+            {user && (
               <Button component={Link} to={`/item/${id}/edit`}>
                 Rediger
               </Button>
             )}
-            {isUserLoggedIn && <Button onClick={deleteItem}>Slett</Button>}
+            {user && <Button onClick={deleteItem}>Slett</Button>}
           </CardActions>
         </Card>
       )}

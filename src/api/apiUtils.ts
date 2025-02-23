@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../constants';
 
 export const PAGE_PARAM = 'page';
 export const QUERY_PARAM = 'q';
@@ -8,8 +9,6 @@ export const NUMBER_PR_PAGE_PARAM = 'max';
 export const SORT_DESCENDING = 'desc';
 export const SORT_ASCENDING = 'asc';
 export const DEFAULT_NUMBER_OF_RESULTS = 10;
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const myApi = axios.create({
   baseURL: API_BASE_URL,

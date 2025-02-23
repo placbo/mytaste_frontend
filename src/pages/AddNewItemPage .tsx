@@ -1,17 +1,18 @@
 import { Alert, Button, Card, CardContent, CardHeader, CardMedia, Container, Grid, Typography } from '@mui/material';
-import { FC, useContext, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { axiosPostHandler } from '../api/apiUtils';
-import { AuthContext } from '../App';
 import { AddImageComponent } from '../components/AddImageComponent';
 import { ItemForm, ItemFormFields } from '../components/ItemForm';
 import { ITEMS_URL, THUMBNAIL_URL } from '../constants';
+import { useAuth } from '../context/AuthContext';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { ISaveItemResponse, Item, Review } from '../types';
 
 export const AddNewItemPage: FC = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
+
   const navigate = useNavigate();
 
   const [saveImageError, setSaveImageError] = useState<Error | undefined>(undefined);
@@ -26,8 +27,10 @@ export const AddNewItemPage: FC = () => {
     const itemObjectToSave: Item = {
       title: dataFromForm.title,
       description: dataFromForm.description ?? '',
-      creator: user,
+      creator: user?.id,
     };
+    //TODO: ta høyde for at epost ikke finnes mer i user - bruker id i stedet
+
     const saveItemResult: ISaveItemResponse = await axiosPostHandler(
       `${ITEMS_URL}`,
       itemObjectToSave,
@@ -39,7 +42,11 @@ export const AddNewItemPage: FC = () => {
     const tagsList = dataFromForm.tags.split(',');
     await axiosPostHandler(`${ITEMS_URL}/${resultItemId}/tags`, { tags: tagsList }, setSavingError, setIsSaving);
 
-    const rewiewToSave: Review = { comment: dataFromForm.review ?? '', user: user, rating: dataFromForm.rating ?? 0 };
+    const rewiewToSave: Review = {
+      comment: dataFromForm.review ?? '',
+      user: user?.id ?? '',
+      rating: dataFromForm.rating ?? 0,
+    };
     await axiosPostHandler(`${ITEMS_URL}/${resultItemId}/reviews`, rewiewToSave, setSavingError, setIsSaving);
 
     setNewItemId(resultItemId);

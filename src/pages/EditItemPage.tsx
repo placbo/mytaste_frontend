@@ -11,18 +11,19 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getItem, getItemReviews, getItemTags } from '../api/api';
 import { axiosPostHandler, axiosPutHandler } from '../api/apiUtils';
-import { AuthContext } from '../App';
 import { ItemForm, ItemFormFields } from '../components/ItemForm';
 import { ITEMS_URL, THUMBNAIL_URL } from '../constants';
+import { useAuth } from '../context/AuthContext';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { Item, Review } from '../types';
 
 export const EditItemPage: FC = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
+
   const navigate = useNavigate();
   const { id: itemIdFromPath } = useParams();
 
@@ -79,7 +80,10 @@ export const EditItemPage: FC = () => {
     await axiosPutHandler(`${ITEMS_URL}/${itemIdFromPath}`, itemObjectToUpdate, setSavingError, setIsSaving);
     const tagsList = dataFromForm.tags.split(',');
     await axiosPostHandler(`${ITEMS_URL}/${itemIdFromPath}/tags`, { tags: tagsList }, setSavingError, setIsSaving);
-    const rewiewToSave: Review = { comment: dataFromForm.review, user: user, rating: dataFromForm.rating };
+    const rewiewToSave: Review = { comment: dataFromForm.review, user: user?.id, rating: dataFromForm.rating };
+
+    //TODO: ta høyde for at epost ikke finnes mer i user - bruker id i stedet
+
     await axiosPostHandler(`${ITEMS_URL}/${itemIdFromPath}/reviews`, rewiewToSave, setSavingError, setIsSaving);
     setHasSaved(true);
   };

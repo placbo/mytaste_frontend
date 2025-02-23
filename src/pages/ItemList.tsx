@@ -1,11 +1,10 @@
 import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import Rating from '@mui/material/Rating';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { getItems } from '../api/api.js';
 import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
-import { AuthContext } from '../App.js';
 import { THUMBNAIL_URL } from '../constants.js';
 import placeholderItemImage from '../resources/images/placeholder.png';
 import { Item } from '../types.js';
@@ -15,7 +14,6 @@ export function ItemList() {
   const [isWaiting, setIsWaiting] = useState(false);
   const [page, setPage] = useState<number>(1);
   const [apiError, setApiError] = useState<Error | undefined>(undefined);
-  const { isUserLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     const geItemsWrapper = async () => {
