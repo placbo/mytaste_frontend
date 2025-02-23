@@ -4,16 +4,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from '../App';
+import { useAuth } from '../context/AuthContext';
 import logo from '../assets/mytaste.png';
 import AddIcon from '@mui/icons-material/Add';
+import { API_BASE_URL } from '../constants';
 
 export const Header = () => {
-  const { isUserLoggedIn, setIsUserLoggedIn } = useContext(AuthContext);
+  const { user, setUser } = useAuth();
 
   function logout() {
-    setIsUserLoggedIn(undefined);
+    setUser(undefined);
     localStorage.removeItem('token');
   }
 
@@ -41,18 +41,19 @@ export const Header = () => {
             </Typography>
           </Box>
 
-          {!isUserLoggedIn ? (
-            <Button component={Link} to="/login">
+          {user?.isAdmin && (
+            <Button variant="contained" component={Link} to="/newitem">
+              <AddIcon sx={{ mr: 1 }} />
+              Ny
+            </Button>
+          )}
+
+          {!user ? (
+            <Button component={Link} to={`${API_BASE_URL}/auth/google`}>
               Logg in
             </Button>
           ) : (
-            <>
-              <Button variant="contained" component={Link} to="/newitem">
-                <AddIcon sx={{ mr: 1 }} />
-                Ny
-              </Button>
-              <Button onClick={logout}>Logg out</Button>
-            </>
+            <Button onClick={logout}>Logg out</Button>
           )}
         </Toolbar>
       </AppBar>

@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import axios from 'axios';
 
 export const PAGE_PARAM = 'page';
 export const QUERY_PARAM = 'q';
@@ -8,20 +9,36 @@ export const SORT_DESCENDING = 'desc';
 export const SORT_ASCENDING = 'asc';
 export const DEFAULT_NUMBER_OF_RESULTS = 10;
 
-import axios from 'axios';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export const generateHeaderWithToken = () => {
-  return {
-    headers: {
-      'X-Auth-Token': localStorage.getItem('token') ?? '',
-    },
-  };
-};
+const myApi = axios.create({
+  baseURL: API_BASE_URL,
+});
+
+myApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+myApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      // Token expired or invalid, redirect to login
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const axiosGetHandler = async (url: string, setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>) => {
   setLoading && setLoading(true);
   try {
-    return (await axios.get(url, generateHeaderWithToken())).data;
+    return (await myApi.get(url)).data;
   } catch (error) {
     setError && setError(error);
   } finally {
@@ -37,7 +54,7 @@ export const axiosPostHandler = async (
 ) => {
   setSaving(true);
   try {
-    return (await axios.post(url, data, generateHeaderWithToken())).data;
+    return (await myApi.post(url, data)).data;
   } catch (error) {
     setError(error);
   } finally {
@@ -53,7 +70,7 @@ export const axiosPutHandler = async (
 ) => {
   setUpdating(true);
   try {
-    return (await axios.put(url, data, generateHeaderWithToken())).data;
+    return (await myApi.put(url, data)).data;
   } catch (error) {
     setError(error);
   } finally {
@@ -68,7 +85,7 @@ export const axiosDeleteHandler = async (
 ) => {
   setDeleting && setDeleting(true);
   try {
-    return (await axios.delete(url, generateHeaderWithToken())).data;
+    return (await myApi.delete(url)).data;
   } catch (error) {
     setError && setError(error);
   } finally {
