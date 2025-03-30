@@ -1,5 +1,4 @@
-import { ThumbUp } from '@mui/icons-material';
-import { Box, Button, Grid, Rating, TextField, Typography } from '@mui/material';
+import { Box, Button, GridLegacy, Rating, TextField, Typography } from '@mui/material';
 
 import { Controller, useForm } from 'react-hook-form';
 
@@ -97,8 +96,8 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId, isDisabled = false 
           disabled={isSaving || isDisabled}
         />
 
-        <Grid container justifyContent="right" sx={{ mt: 4 }}>
-          <Grid item>
+        <GridLegacy container justifyContent="right" sx={{ mt: 4 }}>
+          <GridLegacy item>
             <Button
               type="submit"
               variant="contained"
@@ -107,8 +106,8 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId, isDisabled = false 
               sx={{ ml: 2 }}>
               {itemId ? 'Oppdater felter' : 'Lagre før du legger til bilde'}
             </Button>
-          </Grid>
-        </Grid>
+          </GridLegacy>
+        </GridLegacy>
       </Box>
     </form>
   );

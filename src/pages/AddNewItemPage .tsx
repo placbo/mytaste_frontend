@@ -1,4 +1,4 @@
-import { Alert, Button, Card, CardContent, CardHeader, CardMedia, Container, Grid, Typography } from '@mui/material';
+import { Alert, Button, Card, CardContent, CardHeader, CardMedia, Container, GridLegacy, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -88,8 +88,8 @@ export const AddNewItemPage: FC = () => {
           {saveImageError && <Alert severity="error">{'Kunne ikke lagre bilde'}</Alert>}
           {saveImageSuccess && <Alert severity="success">{'Bildet ble lagret'}</Alert>}
 
-          <Grid container justifyContent="right" sx={{ mt: 4 }}>
-            <Grid item>
+          <GridLegacy container justifyContent="right" sx={{ mt: 4 }}>
+            <GridLegacy item>
               <Button
                 variant="contained"
                 color="secondary"
@@ -99,8 +99,8 @@ export const AddNewItemPage: FC = () => {
                 }}>
                 {'Lukk'}
               </Button>
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </CardContent>
       </Card>
     </Container>

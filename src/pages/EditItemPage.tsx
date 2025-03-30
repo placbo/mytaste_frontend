@@ -8,7 +8,7 @@ import {
   CardMedia,
   CircularProgress,
   Container,
-  Grid,
+  GridLegacy,
   Typography,
 } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
@@ -130,8 +130,8 @@ export const EditItemPage: FC = () => {
           )}
         </CardContent>
         <CardContent>
-          <Grid container justifyContent="center" sx={{ mt: 4 }}>
-            <Grid item>
+          <GridLegacy container justifyContent="center" sx={{ mt: 4 }}>
+            <GridLegacy item>
               <Typography component="legend">Bilde (Ikke editerbart pr nå)</Typography>
               <CardMedia
                 component="img"
@@ -139,10 +139,10 @@ export const EditItemPage: FC = () => {
                 image={imageFileName ? `${THUMBNAIL_URL}${imageFileName}` : placeholderItemImage}
                 alt="image"
               />
-            </Grid>
-          </Grid>
-          <Grid container justifyContent="right" sx={{ mt: 4 }}>
-            <Grid item>
+            </GridLegacy>
+          </GridLegacy>
+          <GridLegacy container justifyContent="right" sx={{ mt: 4 }}>
+            <GridLegacy item>
               <Button
                 variant="contained"
                 color="secondary"
@@ -152,8 +152,8 @@ export const EditItemPage: FC = () => {
                 }}>
                 {'Lukk'}
               </Button>
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </CardContent>
       </Card>
     </Container>
