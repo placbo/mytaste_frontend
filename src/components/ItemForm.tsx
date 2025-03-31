@@ -34,7 +34,7 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId, isDisabled = false 
     },
   });
 
-  function onSubmit<Inputs>({ title, tags, description, rating, review }: ItemFormFields) {
+  function onSubmit({ title, tags, description, rating, review }: ItemFormFields) {
     saveForm({
       title,
       tags,

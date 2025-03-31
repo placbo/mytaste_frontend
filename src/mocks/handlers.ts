@@ -23,7 +23,7 @@ export const handlers = [
     return HttpResponse.json('OK');
   }),
 
-  http.post(API_BASE_URL + '/items', async (request) => {
+  http.post(API_BASE_URL + '/items', async () => {
     await delay();
     return HttpResponse.json('OK', { status: 201 });
   }),

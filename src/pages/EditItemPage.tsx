@@ -54,7 +54,7 @@ export const EditItemPage: FC = () => {
 
         setLoadReviewsError(undefined);
         const reviews: Review[] = await getItemReviews(+itemIdFromPath, setLoadReviewsError, setIsLoadingReviews);
-        const usersReviews = reviews.filter((review) => review.user === user);
+        //const usersReviews = reviews.filter((review) => review.user === user);
         const usersReview = reviews[0];
 
         setItem({

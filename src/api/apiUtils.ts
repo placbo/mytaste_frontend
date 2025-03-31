@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Dispatch, SetStateAction } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../constants';
 
 export const PAGE_PARAM = 'page';
-export const QUERY_PARAM = 'q';
+//export const QUERY_PARAM = 'q';
 export const SORT_PARAM = 'sort';
 export const NUMBER_PR_PAGE_PARAM = 'max';
 export const SORT_DESCENDING = 'desc';
-export const SORT_ASCENDING = 'asc';
+//export const SORT_ASCENDING = 'asc';
 export const DEFAULT_NUMBER_OF_RESULTS = 10;
 
 const myApi = axios.create({
@@ -34,28 +36,28 @@ myApi.interceptors.response.use(
   }
 );
 
-export const axiosGetHandler = async (url: string, setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>) => {
-  setLoading && setLoading(true);
+export const axiosGetHandler = async (url: string, setError?: Dispatch<SetStateAction<Error | undefined>>, setLoading?: Dispatch<SetStateAction<boolean>>) => {
+  if (setLoading)  setLoading(true);
   try {
     return (await myApi.get(url)).data;
   } catch (error) {
-    setError && setError(error);
+    if (setError) setError(error as Error);
   } finally {
-    setLoading && setLoading(false);
+    if(setLoading) setLoading(false);
   }
 };
 
 export const axiosPostHandler = async (
   url: string,
   data: any,
-  setError: any,
+  setError: Dispatch<SetStateAction<Error | undefined>>,
   setSaving: Dispatch<SetStateAction<boolean>>
 ) => {
   setSaving(true);
   try {
     return (await myApi.post(url, data)).data;
   } catch (error) {
-    setError(error);
+    setError(error as Error);
   } finally {
     setSaving(false);
   }
@@ -64,14 +66,14 @@ export const axiosPostHandler = async (
 export const axiosPutHandler = async (
   url: string,
   data: any,
-  setError: any,
+  setError: Dispatch<SetStateAction<Error | undefined>>,
   setUpdating: Dispatch<SetStateAction<boolean>>
 ) => {
   setUpdating(true);
   try {
     return (await myApi.put(url, data)).data;
   } catch (error) {
-    setError(error);
+    setError(error as Error);
   } finally {
     setUpdating(false);
   }
@@ -79,15 +81,15 @@ export const axiosPutHandler = async (
 
 export const axiosDeleteHandler = async (
   url: string,
-  setError?: any,
+  setError?: Dispatch<SetStateAction<Error | undefined>>,
   setDeleting?: Dispatch<SetStateAction<boolean>>
 ) => {
-  setDeleting && setDeleting(true);
+  if (setDeleting) setDeleting(true);
   try {
     return (await myApi.delete(url)).data;
   } catch (error) {
-    setError && setError(error);
+    if (setError) setError(error as Error);
   } finally {
-    setDeleting && setDeleting(false);
+    if (setDeleting) setDeleting(false);
   }
 };

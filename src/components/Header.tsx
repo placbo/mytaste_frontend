@@ -8,8 +8,9 @@ import { useAuth } from '../context/AuthContext';
 import logo from '../assets/mytaste.png';
 import AddIcon from '@mui/icons-material/Add';
 import { API_BASE_URL } from '../constants';
+import { FC } from 'react';
 
-export const Header = () => {
+export const Header:FC = () => {
   const { user, setUser } = useAuth();
 
   function logout() {

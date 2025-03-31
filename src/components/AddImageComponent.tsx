@@ -1,13 +1,12 @@
-import { Dispatch, FC, SetStateAction, useState, ChangeEvent } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 
 import styled from '@emotion/styled';
 import AddAPhoto from '@mui/icons-material/AddAPhoto';
-import { CircularProgress, Typography } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
 import { IMAGE_UPLOAD_URL, THUMBNAIL_URL } from '../constants';
 import axios from 'axios';
-import { Label } from '@mui/icons-material';
 
 const StyledAddImageWrapper = styled.div`
   height: 10rem;
@@ -29,10 +28,10 @@ const maxFileSizeMb = 6 * 1024 * 1024;
 const uploadImage = async (
   file: File,
   itemId: string,
-  setError?: any,
+  setError?: Dispatch<SetStateAction<Error | undefined>>,
   setUploading?: Dispatch<SetStateAction<boolean>>
 ): Promise<string | undefined> => {
-  setUploading && setUploading(true);
+  if (setUploading) setUploading(true);
   try {
     const formData = new FormData();
     formData.append('image', file);
@@ -42,9 +41,10 @@ const uploadImage = async (
     });
     return result.data.filename;
   } catch (error) {
-    setError && setError(error);
+    if (setError) setError(error as Error);
   } finally {
-    setUploading && setUploading(false);
+    if (setUploading) setUploading(false);
+
   }
 };
 
@@ -64,7 +64,7 @@ export const AddImageComponent: FC<Props> = ({ itemId, setError, setSuccess, ima
     if (itemId && file && file?.size < maxFileSizeMb) {
       const generatedFileName = await uploadImage(file, itemId, setError, setIsUploadingImage);
       setSuccess(true);
-      generatedFileName && setImageFileName(generatedFileName);
+      if (generatedFileName ){setImageFileName(generatedFileName);}
     } else {
       setError(new Error('For stor fil'));
     }

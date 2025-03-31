@@ -1,3 +1,5 @@
+/* eslint-disable  */
+
 import { ITEMS_URL } from '../constants';
 import { axiosGetHandler, NUMBER_PR_PAGE_PARAM, PAGE_PARAM, SORT_DESCENDING, SORT_PARAM } from './apiUtils';
 import { Dispatch, SetStateAction } from 'react';

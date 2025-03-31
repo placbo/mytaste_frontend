@@ -15,6 +15,7 @@ import { EditItemPage } from './pages/EditItemPage';
 import { ItemDetails } from './pages/Item';
 import { ItemList } from './pages/ItemList';
 import { NotFound } from './pages/NotFound';
+import { FC } from 'react';
 
 const darkTheme = createTheme({
   palette: {
@@ -22,8 +23,8 @@ const darkTheme = createTheme({
   },
 });
 
-function App() {
-  return (
+  export const App:FC = () => {
+    return (
     <AuthProvider>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
@@ -43,6 +44,6 @@ function App() {
       </ThemeProvider>
     </AuthProvider>
   );
-}
+};
 
 export default App;
