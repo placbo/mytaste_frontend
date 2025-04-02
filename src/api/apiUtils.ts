@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Dispatch, SetStateAction } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../constants';

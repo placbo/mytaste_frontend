@@ -3,7 +3,8 @@ import { Box, Button, GridLegacy, Rating, TextField, Typography } from '@mui/mat
 import { Controller, useForm } from 'react-hook-form';
 
 interface ItemFormProps {
-  saveForm: (dataFromForm: ItemFormFields) => void;
+  // eslint-disable-next-line
+  saveForm: (formData:ItemFormFields) => void;
   isSaving: boolean;
   item?: ItemFormFields;
   itemId?: string | undefined;
@@ -35,13 +36,14 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId, isDisabled = false 
   });
 
   function onSubmit({ title, tags, description, rating, review }: ItemFormFields) {
-    saveForm({
+    const formData:ItemFormFields = {
       title,
       tags,
       description,
       rating,
       review,
-    });
+    }
+    saveForm(formData);
   }
 
   return (
