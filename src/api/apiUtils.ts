@@ -10,6 +10,14 @@ export const SORT_DESCENDING = 'desc';
 //export const SORT_ASCENDING = 'asc';
 export const DEFAULT_NUMBER_OF_RESULTS = 10;
 
+// export const generateHeaderWithToken = () => {
+//   return {
+//     headers: {
+//       'X-Auth-Token': localStorage.getItem('token') ?? '',
+//     },
+//   };
+// };
+
 const myApi = axios.create({
   baseURL: API_BASE_URL,
 });
@@ -34,14 +42,18 @@ myApi.interceptors.response.use(
   }
 );
 
-export const axiosGetHandler = async (url: string, setError?: Dispatch<SetStateAction<Error | undefined>>, setLoading?: Dispatch<SetStateAction<boolean>>) => {
-  if (setLoading)  setLoading(true);
+export const axiosGetHandler = async (
+  url: string,
+  setError?: Dispatch<SetStateAction<Error | undefined>>,
+  setLoading?: Dispatch<SetStateAction<boolean>>
+) => {
+  if (setLoading) setLoading(true);
   try {
     return (await myApi.get(url)).data;
   } catch (error) {
     if (setError) setError(error as Error);
   } finally {
-    if(setLoading) setLoading(false);
+    if (setLoading) setLoading(false);
   }
 };
 

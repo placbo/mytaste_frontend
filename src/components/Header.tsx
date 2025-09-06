@@ -7,10 +7,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/mytaste.png';
 import AddIcon from '@mui/icons-material/Add';
-import { API_BASE_URL } from '../constants';
 import { FC } from 'react';
 
-export const Header:FC = () => {
+export const Header: FC = () => {
   const { user, setUser } = useAuth();
 
   function logout() {
@@ -50,7 +49,7 @@ export const Header:FC = () => {
           )}
 
           {!user ? (
-            <Button component={Link} to={`${API_BASE_URL}/auth/google`}>
+            <Button component={Link} to="/login">
               Logg in
             </Button>
           ) : (
