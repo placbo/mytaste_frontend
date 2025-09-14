@@ -1,4 +1,5 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 export type User = {
   id: string;
@@ -12,6 +13,7 @@ export type User = {
 type AuthContextType = {
   user: User | undefined;
   setUser: Dispatch<SetStateAction<User | undefined>>;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,7 +21,30 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
 
-  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;
+  // Rehydrate user from stored JWT once on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    try {
+      const decoded: User = jwtDecode(token);
+      if (decoded.exp * 1000 > Date.now()) {
+        setUser(decoded);
+      } else {
+        localStorage.removeItem('token');
+      }
+    } catch {
+      localStorage.removeItem('token');
+    }
+  }, []);
+
+  const logout = useCallback(() => {
+    setUser(undefined);
+    localStorage.removeItem('token');
+  }, []);
+
+  const value = useMemo(() => ({ user, setUser, logout }), [user, logout]);
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

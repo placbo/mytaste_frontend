@@ -10,13 +10,9 @@ import AddIcon from '@mui/icons-material/Add';
 import { FC } from 'react';
 
 export const Header: FC = () => {
-  const { user, setUser } = useAuth();
+  const { user, logout } = useAuth();
 
-  function logout() {
-    setUser(undefined);
-    localStorage.removeItem('token');
-  }
-
+  console.log('USER', user);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

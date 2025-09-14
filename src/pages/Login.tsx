@@ -1,6 +1,6 @@
 import { Alert, Box, Button, CircularProgress, Container, TextField } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL, LOGIN_URL } from '../constants';
 import { useAuth, User } from '../context/AuthContext';
@@ -14,6 +14,11 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    passwordRef.current?.focus();
+  }, []);
 
   const login = async () => {
     try {
@@ -57,7 +62,13 @@ export const LoginPage = () => {
           label="Passord"
           variant="standard"
           disabled={isLoading}
+          inputRef={passwordRef}
           onChange={(event) => setPassword(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              login();
+            }
+          }}
         />
         <Button variant="contained" disabled={isLoading} onClick={login} sx={{ ml: 2 }}>
           Do it! {isLoading && <CircularProgress size={'1rem'} />}
