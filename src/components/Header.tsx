@@ -30,7 +30,7 @@ export const Header: FC = () => {
             borderBottom: '1px solid grey',
           }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <img src={logo} height="50px"></img>
+            <img alt="logo" src={logo} height="50px"></img>
             <Typography
               variant="h6"
               component={Link}
