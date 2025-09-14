@@ -2,7 +2,7 @@ import { Alert, Box, Button, CircularProgress, Container, TextField } from '@mui
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LOGIN_URL } from '../constants';
+import { API_BASE_URL, LOGIN_URL } from '../constants';
 import { useAuth, User } from '../context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
 
@@ -19,7 +19,7 @@ export const LoginPage = () => {
     try {
       setIsLoading(true);
       setLoginError('');
-      const result = await axios.post(LOGIN_URL, {
+      const result = await axios.post(API_BASE_URL+ LOGIN_URL, {
         password,
       });
       const fetchedToken = await result.data.token;
