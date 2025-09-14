@@ -5,9 +5,12 @@ set -e
 
 echo "Starting deployment process..."
 
+echo "removing package-lock.json and pulling from github"
+rm package-lock.json # Remove lockfile on private network
+git pull
+
 # Install dependencies
 echo "Installing dependencies (TURN OFF VPN)..."
-rm package-lock.json # Remove lockfile on private network
 npm install --verbose
 
 # Build the React application
