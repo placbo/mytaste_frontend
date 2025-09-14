@@ -8,10 +8,10 @@ echo "Starting deployment process..."
 # Install dependencies
 echo "Installing dependencies (TURN OFF VPN)..."
 rm package-lock.json # Remove lockfile on private network
-npm install
+npm install --verbose
 
 # Build the React application
-echo "Building application..."
+echo "Buildinng application..."
 npm run build
 
 # Create destination directory if it doesn't exist
