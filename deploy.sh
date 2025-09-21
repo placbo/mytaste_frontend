@@ -10,7 +10,7 @@ rm -f package-lock.json # Remove lockfile on private network
 git pull
 
 # Install dependencies
-echo "Installing dependencies (TURN OFF VPN)..."
+echo "Installing dependencies (TURN OFF VPN???)..."
 npm install --verbose
 
 # Build the React application
