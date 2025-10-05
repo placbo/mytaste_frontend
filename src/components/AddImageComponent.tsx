@@ -36,8 +36,12 @@ const uploadImage = async (
     const formData = new FormData();
     formData.append('image', file);
     formData.append('itemid', itemId);
+    const token = localStorage.getItem('token');
     const result = await axios.post(`${IMAGE_UPLOAD_URL}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
     });
     return result.data.filename;
   } catch (error) {
