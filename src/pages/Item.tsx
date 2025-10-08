@@ -30,7 +30,7 @@ export const ItemDetails: FC = () => {
 
   const [item, setItem] = useState<Item | undefined>(undefined);
   const [tags, setTags] = useState<Tag[]>([]);
-  const [reviews, seReviews] = useState<Review[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   const [isLoadingItem, setIsLoadingItem] = useState(false);
   const [isLoadingTags, setIsLoadingTags] = useState(false);
@@ -54,7 +54,7 @@ export const ItemDetails: FC = () => {
         setTags(tags);
 
         const reviews = await getItemReviews(+id, setReviewsApiError, setIsLoadingReviews);
-        seReviews(reviews);
+        setReviews(reviews);
       }
     };
     geItemWrapper();
@@ -102,7 +102,7 @@ export const ItemDetails: FC = () => {
               </Alert>
             )}
             <Stack direction="row-reverse" spacing={1}>
-              {tags && tags.map((tag) => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
+              {tags?.map((tag) => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
             </Stack>
           </CardContent>
           <CardMedia

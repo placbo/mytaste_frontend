@@ -7,6 +7,7 @@ export interface Item {
   imageURL?: string;
   averageRating?: number;
   averageRatingCount?: number;
+  tags?: Tag[];
 }
 
 export interface ItemsResponse {

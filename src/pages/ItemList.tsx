@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography, Chip,Stack } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import Rating from '@mui/material/Rating';
 import { useEffect, useState } from 'react';
@@ -65,17 +65,16 @@ export function ItemList() {
                     {item.title}
                   </Typography>
                   {item.averageRating && (
-                    <Box sx={{ display: 'flex', gap: '1rem' }}>
+                    <>
                       <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} />
                       <Typography variant="subtitle1" color="text.secondary" component="span">
                         {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'stemme' : 'stemmer'}
                       </Typography>
-                      {/* <Stack direction="row-reverse" spacing={1}>
-                        {tags && tags.map((tag) => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
-                      </Stack> */}
-                    </Box>
+                    </>
                   )}
-                </Box>
+                  <Stack direction="row" spacing={1}  useFlexGap  sx={{ flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                    {item.tags?.map((tag) => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
+                  </Stack>                </Box>
               </CardContent>
             </CardActionArea>
           </Card>
