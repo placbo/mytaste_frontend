@@ -11,8 +11,6 @@ import { FC } from 'react';
 
 export const Header: FC = () => {
   const { user, logout } = useAuth();
-
-  console.log('USER', user);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

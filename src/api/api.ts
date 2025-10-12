@@ -15,7 +15,19 @@ export const getItems = (
 ): Promise<ItemsResponse> => {
   const url = `${ITEMS_URL}?${PAGE_PARAM}=${page}&${SORT_PARAM}=${SORT_DESCENDING}&${NUMBER_PR_PAGE_PARAM}=${numberPrPage}`;
   return axiosGetHandler(url, setError, setLoading);
+}
+
+export const searchItems = (
+  searchQuery: string,
+  page: number,
+  numberPrPage: number,
+  setError?: any,
+  setLoading?: Dispatch<SetStateAction<boolean>>
+): Promise<ItemsResponse> => {
+  const url = `${ITEMS_URL}/search?q=${searchQuery}&${PAGE_PARAM}=${page}&${SORT_PARAM}=${SORT_DESCENDING}&${NUMBER_PR_PAGE_PARAM}=${numberPrPage}`;
+  return axiosGetHandler(url, setError, setLoading);
 };
+
 
 export const getItem = (id: number, setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>): Promise<Item> => {
   return axiosGetHandler(`${ITEMS_URL}/${id}`, setError, setLoading);
