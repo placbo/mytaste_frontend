@@ -1,72 +1,73 @@
-# Copilot Instructions: Kodestil for MyTaste Frontend
+# Copilot Instructions: Code Style for MyTaste Frontend
 
-Dette dokumentet beskriver kodestilen og beste praksis som skal følges i dette prosjektet. Følg disse retningslinjene for å sikre konsistens og lesbarhet i koden.
+This document describes the code style and best practices to be followed in this project. Follow these guidelines to ensure consistency and readability in the code.
 
-## Generelle prinsipper
-- **TypeScript** skal brukes for alle filer (bruk `.ts` og `.tsx`).
-- **React**-funksjonskomponenter benyttes, med hooks for tilstand og sideeffekter.
-- Koden skal være **modulær** og **gjenbrukbar**.
-- Bruk **ES6+**-syntaks (const, let, arrow functions, destructuring, etc.).
-- Unngå duplisering av kode.
+## General Principles
+- **TypeScript** must be used for all files (use `.ts` and `.tsx`).
+- Use **React** function components, with hooks for state and side effects.
+- Code should be **modular** and **reusable**.
+- Use **ES6+** syntax (const, let, arrow functions, destructuring, etc.).
+- Avoid code duplication.
 
-## Fil- og mappestruktur
-- Del opp koden i logiske mapper: `components/`, `pages/`, `api/`, `context/`, `mocks/`, `assets/`, `resources/`.
-- En komponent per fil.
-- Navngi komponentfiler med stor forbokstav, f.eks. `Header.tsx`.
-- Type-definisjoner samles i `types.ts`.
+## File and Folder Structure
+- Organize code into logical folders: `components/`, `pages/`, `api/`, `context/`, `mocks/`, `assets/`, `resources/`.
+- One component per file.
+- Name component files with a capital letter, e.g. `Header.tsx`.
+- Type definitions are collected in `types.ts`.
 
-## Importer
-- Bruk relative imports innenfor `src/`.
-- Gruppér imports: eksterne pakker først, deretter interne moduler.
-- Unngå wildcard-importer (`import * as ...`).
+## Imports
+- Use relative imports within `src/`.
+- Group imports: external packages first, then internal modules.
+- Avoid wildcard imports (`import * as ...`).
 
-## Funksjoner og variabler
-- Bruk **const** som standard, **let** kun hvis nødvendig.
-- Navngi variabler og funksjoner beskrivende og på engelsk.
-- Funksjoner skal være rene og små.
-- Unngå magiske tall og strenger – bruk konstanter fra `constants.ts`.
+## Functions and Variables
+- Use **const** as default, **let** only if necessary.
+- Name variables and functions descriptively and in English.
+- Use camelCase for variables and functions, PascalCase for components and types.
+- Functions should be pure and small.
+- Avoid magic numbers and strings – use constants from `constants.ts`.
 
 ## Typing
-- All kode skal være typesikret med TypeScript.
-- Bruk eksplisitte typer for props, state og funksjonsparametre.
-- Bruk `interface` eller `type` for komplekse objekter.
+- All code must be type-safe with TypeScript.
+- Use explicit types for props, state, and function parameters.
+- Use `interface` or `type` for complex objects. Prefer `type` for unions and intersections.
+- Avoid the "any" type.
 
-## React-spesifikt
-- Funksjonskomponenter skrives som arrow functions.
-- Props og state skal typesikres.
-- Bruk hooks (`useState`, `useEffect`, etc.) fremfor klasser.
-- Unngå sideeffekter i render-funksjonen.
+## React Specifics
+- Function components should be written as arrow functions.
+- Props and state must be type-safe.
+- Use hooks (`useState`, `useEffect`, etc.) instead of classes.
+- Avoid side effects in the render function.
+- Avoid useEffect without dependencies and when not stictly necessary.
+- Use context for global state management, avoid prop drilling.
+- Use `React.FC` for component typing.
 
-## API-kall
-- API-kall håndteres i `api/`-mappen.
-- Bruk egne handler-funksjoner for GET/POST/PUT/DELETE.
-- Feilhåndtering og loading-state skal støttes.
+## API Calls
+- API calls are handled in the `api/` folder.
+- Use dedicated handler functions for GET/POST/PUT/DELETE.
+- Error handling and loading state must be supported.
 
-## Kommentarer og dokumentasjon
-- Kommenter kun der det er nødvendig for forståelse.
-- Bruk JSDoc for komplekse funksjoner.
-- Skriv på engelsk i kode og kommentarer.
+## Comments and Documentation
+- Comment only where necessary for understanding.
+- Use JSDoc for complex functions.
+- Write in English in code and comments.
 
-## Stiling
-- Bruk CSS-moduler, ikke bruk styled components eller inline styles på ny kode. 
+## Styling
+- Use CSS modules, do not use styled components or inline styles in new code.
 
-## Formatering og linting
-- Følg prosjektets ESLint- og Prettier-regler.
-- Indenter med 2 mellomrom.
-- Maks linjelengde: 100 tegn.
-- Unngå trailing whitespace.
+## Formatting and Linting
+- Follow the project's ESLint and Prettier rules.
+- Avoid trailing whitespace.
 
-## Testing og mock-data
-- Bruk mock-data fra `mocks/` for utvikling og testing.
-- Skriv enkle enhetstester der det er hensiktsmessig.
+## Testing and Mock Data
+- Use mock data from `mocks/` for development and testing.
+- Write simple unit tests where appropriate.
 
-## Vanlige "best practices"
-- Unngå "any"-typen.
-- Ikke legg inn sensitive data i repoet.
-- Skriv kode som er lett å utvide og vedlikeholde.
+## Common Best Practices
+- Do not include sensitive data in the repo.
+- Write code that is easy to extend and maintain.
 
 ---
 
-**Oppsummering:**
-Følg disse retningslinjene for å sikre at koden er konsistent, lesbar og enkel å vedlikeholde. 
-
+**Summary:**
+Follow these guidelines to ensure that the code is consistent, readable, and easy to maintain.
