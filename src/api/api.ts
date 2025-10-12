@@ -7,7 +7,7 @@ import {
   SORT_PARAM,
 } from './apiUtils';
 import { Dispatch, SetStateAction } from 'react';
-import { Item, ItemsResponse, Tag } from '../types.js';
+import { Item, ItemsResponse, Tag, TagWithUsageCount } from '../types.js';
 
 export const getAllItems = (
   setError?: any,
@@ -43,6 +43,13 @@ export const getItem = (
   setLoading?: Dispatch<SetStateAction<boolean>>
 ): Promise<Item> => {
   return axiosGetHandler(`${ITEMS_URL}/${id}`, setError, setLoading);
+};
+
+export const getTags = (
+  setError?: any,
+  setLoading?: Dispatch<SetStateAction<boolean>>
+): Promise<TagWithUsageCount[]> => {
+  return axiosGetHandler(`${ITEMS_URL}/tags`, setError, setLoading);
 };
 
 export const getItemTags = (

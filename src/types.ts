@@ -31,3 +31,9 @@ export interface Tag {
 export interface ISaveItemResponse {
   id: string;
 }
+
+export interface TagWithUsageCount {
+  tagId: number;
+  tag: string;
+  usageCount: number;
+}

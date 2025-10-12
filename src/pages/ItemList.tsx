@@ -18,11 +18,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Rating from '@mui/material/Rating';
 import { useEffect, useState, useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { getItems, searchItems } from '../api/api.js';
+import { getItems, searchItems, getTags } from '../api/api.js';
 import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
 import { THUMBNAIL_URL } from '../constants.js';
 import placeholderItemImage from '../resources/images/placeholder.png';
-import { Item } from '../types.js';
+import { Item, TagWithUsageCount } from '../types.js';
 
 export function ItemList() {
   const [items, setItems] = useState<Item[]>([]);
@@ -35,6 +35,30 @@ export function ItemList() {
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+
+  // New state for tags
+  const [tags, setTags] = useState<TagWithUsageCount[]>([]);
+  const [tagsLoading, setTagsLoading] = useState(false);
+  const [tagsError, setTagsError] = useState<Error | undefined>(undefined);
+
+  // Load tags when component mounts
+  useEffect(() => {
+    const fetchTags = async () => {
+      setTagsLoading(true);
+      setTagsError(undefined);
+      try {
+        const result = await getTags(setTagsError, setTagsLoading);
+        if (result) {
+          setTags(result);
+        }
+      } catch (error) {
+        console.error('Error fetching tags:', error);
+      } finally {
+        setTagsLoading(false);
+      }
+    };
+    fetchTags();
+  }, []);
 
   // Load complete list of items (not search) on page or when exiting search mode
   useEffect(() => {
@@ -139,6 +163,52 @@ export function ItemList() {
         />
       </Box>
 
+      {/* Tags List */}
+      <Box sx={{ px: 2, pb: 2 }}>
+        {tagsLoading && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <CircularProgress size={16} />
+            <Typography variant="body2" color="text.secondary">
+              Laster tags...
+            </Typography>
+          </Box>
+        )}
+
+        {tagsError && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            Kunne ikke laste tags
+          </Alert>
+        )}
+
+        {!tagsLoading && !tagsError && tags.length > 0 && (
+          <>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+              Populære tags:
+            </Typography>
+            <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
+              {tags
+                .sort((a: TagWithUsageCount, b: TagWithUsageCount) => b.usageCount - a.usageCount) // Sort by usage count descending
+                .slice(0, 10) // Show top 10 most used tags
+                .map((tag: TagWithUsageCount) => (
+                  <Chip
+                    key={tag.tagId}
+                    label={`${tag.tag} (${tag.usageCount})`}
+                    variant="outlined"
+                    size="small"
+                    clickable
+                    onClick={() => setQuery(tag.tag)}
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: 'action.hover',
+                      },
+                    }}
+                  />
+                ))}
+            </Stack>
+          </>
+        )}
+      </Box>
+
       {isWaiting && (
         <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
           <CircularProgress />
@@ -165,7 +235,7 @@ export function ItemList() {
           >
             <CardMedia
               component="img"
-              sx={{ maxWidth: 150 }}
+              sx={{ maxWidth: 70 }}
               image={item.imageURL ? `${THUMBNAIL_URL}${item.imageURL}` : placeholderItemImage}
               alt="image"
             />
