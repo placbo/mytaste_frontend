@@ -41,6 +41,9 @@ export function ItemList() {
   const [tagsLoading, setTagsLoading] = useState(false);
   const [tagsError, setTagsError] = useState<Error | undefined>(undefined);
 
+  // State to track if more items are available
+  const [hasMore, setHasMore] = useState(true);
+
   // Load tags when component mounts
   useEffect(() => {
     const fetchTags = async () => {
@@ -69,6 +72,9 @@ export function ItemList() {
       const result = await getItems(page, DEFAULT_NUMBER_OF_RESULTS, setApiError, setIsWaiting);
       if (result) {
         setItems((prev) => [...prev, ...result.items]);
+        setHasMore(result.items.length === DEFAULT_NUMBER_OF_RESULTS);
+      } else {
+        setHasMore(false);
       }
     };
     getItemsWrapper();
@@ -80,6 +86,7 @@ export function ItemList() {
       setIsSearchMode(false);
       setItems([]);
       setPage(1);
+      setHasMore(true);
       return;
     }
 
@@ -99,6 +106,9 @@ export function ItemList() {
       } else {
         setItems((prev) => [...prev, ...result.items]);
       }
+      setHasMore(result.items.length === DEFAULT_NUMBER_OF_RESULTS);
+    } else {
+      setHasMore(false);
     }
   }, []);
 
@@ -136,6 +146,7 @@ export function ItemList() {
     setPage(1);
     setSearchPage(1);
     setHasSearched(false);
+    setHasMore(true);
   };
 
   return (
@@ -282,9 +293,11 @@ export function ItemList() {
       ))}
 
       <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
-        <Button onClick={triggerNextPageFetch} disabled={isWaiting}>
-          Vis mer...
-        </Button>
+        {hasMore && (
+          <Button onClick={triggerNextPageFetch} disabled={isWaiting}>
+            Vis mer...
+          </Button>
+        )}
       </Box>
     </>
   );
