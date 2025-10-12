@@ -246,7 +246,7 @@ export function ItemList() {
           >
             <CardMedia
               component="img"
-              sx={{ maxWidth: 70 }}
+              sx={{ maxWidth: 100 }}
               image={item.imageURL ? `${THUMBNAIL_URL}${item.imageURL}` : placeholderItemImage}
               alt="image"
             />
