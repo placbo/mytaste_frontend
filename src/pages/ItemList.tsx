@@ -193,8 +193,8 @@ export function ItemList() {
 
         {!tagsLoading && !tagsError && tags.length > 0 && (
           <>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-              Populære tags:
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1, mt: 1 }}>
+              10 mest brukte tags (klikk for å søke):
             </Typography>
             <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
               {tags
@@ -259,7 +259,12 @@ export function ItemList() {
                   justifyContent: 'space-between',
                 }}
               >
-                <Typography component="div" variant="h6" gutterBottom>
+                <Typography
+                  component="div"
+                  variant="h6"
+                  gutterBottom
+                  sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}
+                >
                   {item.title}
                 </Typography>
                 {item.averageRating && (
@@ -270,7 +275,7 @@ export function ItemList() {
                       readOnly
                       value={+item.averageRating}
                     />
-                    <Typography variant="subtitle1" color="text.secondary" component="span">
+                    <Typography variant="subtitle2" color="text.secondary" component="span">
                       {item.averageRatingCount || '0'}{' '}
                       {item.averageRatingCount === 1 ? 'stemme' : 'stemmer'}
                     </Typography>
