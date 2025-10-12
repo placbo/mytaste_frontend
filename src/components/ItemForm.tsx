@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 interface ItemFormProps {
   // eslint-disable-next-line
-  saveForm: (formData:ItemFormFields) => void;
+  saveForm: (formData: ItemFormFields) => void;
   isSaving: boolean;
   item?: ItemFormFields;
   itemId?: string | undefined;
@@ -19,7 +19,13 @@ export type ItemFormFields = {
   review: string;
 };
 
-export const ItemForm = ({ saveForm, isSaving, item, itemId, isDisabled = false }: ItemFormProps) => {
+export const ItemForm = ({
+  saveForm,
+  isSaving,
+  item,
+  itemId,
+  isDisabled = false,
+}: ItemFormProps) => {
   const {
     register,
     control,
@@ -36,13 +42,13 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId, isDisabled = false 
   });
 
   function onSubmit({ title, tags, description, rating, review }: ItemFormFields) {
-    const formData:ItemFormFields = {
+    const formData: ItemFormFields = {
       title,
       tags,
       description,
       rating,
       review,
-    }
+    };
     saveForm(formData);
   }
 
@@ -105,7 +111,8 @@ export const ItemForm = ({ saveForm, isSaving, item, itemId, isDisabled = false 
               variant="contained"
               color="primary"
               disabled={isSaving || isDisabled || !isDirty}
-              sx={{ ml: 2 }}>
+              sx={{ ml: 2 }}
+            >
               {itemId ? 'Oppdater felter' : 'Lagre før du legger til bilde'}
             </Button>
           </GridLegacy>

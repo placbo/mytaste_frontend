@@ -1,9 +1,18 @@
 import { ITEMS_URL } from '../constants';
-import { axiosGetHandler, NUMBER_PR_PAGE_PARAM, PAGE_PARAM, SORT_DESCENDING, SORT_PARAM } from './apiUtils';
+import {
+  axiosGetHandler,
+  NUMBER_PR_PAGE_PARAM,
+  PAGE_PARAM,
+  SORT_DESCENDING,
+  SORT_PARAM,
+} from './apiUtils';
 import { Dispatch, SetStateAction } from 'react';
 import { Item, ItemsResponse, Tag } from '../types.js';
 
-export const getAllItems = (setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>): Promise<ItemsResponse> => {
+export const getAllItems = (
+  setError?: any,
+  setLoading?: Dispatch<SetStateAction<boolean>>
+): Promise<ItemsResponse> => {
   return axiosGetHandler(ITEMS_URL, setError, setLoading);
 };
 
@@ -15,7 +24,7 @@ export const getItems = (
 ): Promise<ItemsResponse> => {
   const url = `${ITEMS_URL}?${PAGE_PARAM}=${page}&${SORT_PARAM}=${SORT_DESCENDING}&${NUMBER_PR_PAGE_PARAM}=${numberPrPage}`;
   return axiosGetHandler(url, setError, setLoading);
-}
+};
 
 export const searchItems = (
   searchQuery: string,
@@ -28,8 +37,11 @@ export const searchItems = (
   return axiosGetHandler(url, setError, setLoading);
 };
 
-
-export const getItem = (id: number, setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>): Promise<Item> => {
+export const getItem = (
+  id: number,
+  setError?: any,
+  setLoading?: Dispatch<SetStateAction<boolean>>
+): Promise<Item> => {
   return axiosGetHandler(`${ITEMS_URL}/${id}`, setError, setLoading);
 };
 

@@ -1,4 +1,18 @@
-import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Typography, Chip, Stack, TextField, IconButton, InputAdornment } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Typography,
+  Chip,
+  Stack,
+  TextField,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import CircularProgress from '@mui/material/CircularProgress';
 import Rating from '@mui/material/Rating';
@@ -30,7 +44,7 @@ export function ItemList() {
       setApiError(undefined);
       const result = await getItems(page, DEFAULT_NUMBER_OF_RESULTS, setApiError, setIsWaiting);
       if (result) {
-        setItems(prev => [...prev, ...result.items]);
+        setItems((prev) => [...prev, ...result.items]);
       }
     };
     getItemsWrapper();
@@ -48,12 +62,18 @@ export function ItemList() {
     setApiError(undefined);
     setIsSearchMode(true);
 
-    const result = await searchItems(searchQuery, pageNum, DEFAULT_NUMBER_OF_RESULTS, setApiError, setIsWaiting);
+    const result = await searchItems(
+      searchQuery,
+      pageNum,
+      DEFAULT_NUMBER_OF_RESULTS,
+      setApiError,
+      setIsWaiting
+    );
     if (result) {
       if (pageNum === 1) {
         setItems(result.items);
       } else {
-        setItems(prev => [...prev, ...result.items]);
+        setItems((prev) => [...prev, ...result.items]);
       }
     }
   }, []);
@@ -62,7 +82,7 @@ export function ItemList() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setIsTyping(false); // User stopped typing, debounce period starts
-      if (query.trim().length>0) {
+      if (query.trim().length > 0) {
         setSearchPage(1);
         performSearch(query, 1);
       } else if (hasSearched) {
@@ -81,7 +101,7 @@ export function ItemList() {
       setSearchPage(nextSearchPage);
       performSearch(query, nextSearchPage);
     } else {
-      setPage(prev => prev + 1);
+      setPage((prev) => prev + 1);
     }
   };
 
@@ -99,7 +119,7 @@ export function ItemList() {
       <Box sx={{ p: 2, pt: 3, pb: 1 }}>
         <TextField
           fullWidth
-          label={isSearchMode ? "Søk i alle elementer (tittel)" : "Søk i alle elementer (tittel)"}
+          label={'Søk i alle elementer (tittel)'}
           size="small"
           value={query}
           onChange={(e) => {
@@ -110,15 +130,11 @@ export function ItemList() {
           InputProps={{
             endAdornment: query && (
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="tøm søk"
-                  size="small"
-                  onClick={clearQuery}
-                  edge="end">
+                <IconButton aria-label="tøm søk" size="small" onClick={clearQuery} edge="end">
                   <ClearIcon fontSize="small" />
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
       </Box>
@@ -145,7 +161,8 @@ export function ItemList() {
           <CardActionArea
             component={RouterLink}
             to={'/item/' + item.itemId}
-            sx={{ display: 'flex', justifyContent: 'start' }}>
+            sx={{ display: 'flex', justifyContent: 'start' }}
+          >
             <CardMedia
               component="img"
               sx={{ maxWidth: 150 }}
@@ -153,20 +170,40 @@ export function ItemList() {
               alt="image"
             />
             <CardContent>
-              <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  justifyContent: 'space-between',
+                }}
+              >
                 <Typography component="div" variant="h6" gutterBottom>
                   {item.title}
                 </Typography>
                 {item.averageRating && (
                   <>
-                    <Rating name="simple-controlled" precision={0.5} readOnly value={+item.averageRating} />
+                    <Rating
+                      name="simple-controlled"
+                      precision={0.5}
+                      readOnly
+                      value={+item.averageRating}
+                    />
                     <Typography variant="subtitle1" color="text.secondary" component="span">
-                      {item.averageRatingCount || '0'} {item.averageRatingCount === 1 ? 'stemme' : 'stemmer'}
+                      {item.averageRatingCount || '0'}{' '}
+                      {item.averageRatingCount === 1 ? 'stemme' : 'stemmer'}
                     </Typography>
                   </>
                 )}
-                <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap', marginTop: '0.5rem' }}>
-                  {item.tags?.map(tag => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  useFlexGap
+                  sx={{ flexWrap: 'wrap', marginTop: '0.5rem' }}
+                >
+                  {item.tags?.map((tag) => (
+                    <Chip key={tag.tagId} label={tag.tag} variant="outlined" />
+                  ))}
                 </Stack>
               </Box>
             </CardContent>

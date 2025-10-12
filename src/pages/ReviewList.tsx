@@ -13,7 +13,13 @@ export const ReviewList: FC<IReviewListProps> = ({ reviews }) => {
         reviews.map((review) => (
           <Card key={review.reviewId} sx={{ backgroundColor: '#333333' }}>
             <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Rating sx={{ mb: 2 }} name="simple-controlled" precision={0.5} readOnly value={review.rating} />
+              <Rating
+                sx={{ mb: 2 }}
+                name="simple-controlled"
+                precision={0.5}
+                readOnly
+                value={review.rating}
+              />
               <Typography variant="body1" gutterBottom>
                 {review.comment}
               </Typography>

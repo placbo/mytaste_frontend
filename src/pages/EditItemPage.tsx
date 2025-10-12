@@ -53,7 +53,11 @@ export const EditItemPage: FC = () => {
         const tags = await getItemTags(+itemIdFromPath, setLoadTagsError, setIsLoadingTags);
 
         setLoadReviewsError(undefined);
-        const reviews: Review[] = await getItemReviews(+itemIdFromPath, setLoadReviewsError, setIsLoadingReviews);
+        const reviews: Review[] = await getItemReviews(
+          +itemIdFromPath,
+          setLoadReviewsError,
+          setIsLoadingReviews
+        );
         //const usersReviews = reviews.filter((review) => review.user === user);
         const usersReview = reviews[0];
 
@@ -77,14 +81,33 @@ export const EditItemPage: FC = () => {
       title: dataFromForm.title,
       description: dataFromForm.description,
     };
-    await axiosPutHandler(`${ITEMS_URL}/${itemIdFromPath}`, itemObjectToUpdate, setSavingError, setIsSaving);
+    await axiosPutHandler(
+      `${ITEMS_URL}/${itemIdFromPath}`,
+      itemObjectToUpdate,
+      setSavingError,
+      setIsSaving
+    );
     const tagsList = dataFromForm.tags.split(',');
-    await axiosPostHandler(`${ITEMS_URL}/${itemIdFromPath}/tags`, { tags: tagsList }, setSavingError, setIsSaving);
-    const rewiewToSave: Review = { comment: dataFromForm.review, user: user?.id, rating: dataFromForm.rating };
+    await axiosPostHandler(
+      `${ITEMS_URL}/${itemIdFromPath}/tags`,
+      { tags: tagsList },
+      setSavingError,
+      setIsSaving
+    );
+    const rewiewToSave: Review = {
+      comment: dataFromForm.review,
+      user: user?.id,
+      rating: dataFromForm.rating,
+    };
 
     //TODO: ta høyde for at epost ikke finnes mer i user - bruker id i stedet
 
-    await axiosPostHandler(`${ITEMS_URL}/${itemIdFromPath}/reviews`, rewiewToSave, setSavingError, setIsSaving);
+    await axiosPostHandler(
+      `${ITEMS_URL}/${itemIdFromPath}/reviews`,
+      rewiewToSave,
+      setSavingError,
+      setIsSaving
+    );
     setHasSaved(true);
   };
 
@@ -149,7 +172,8 @@ export const EditItemPage: FC = () => {
                 sx={{ ml: 2 }}
                 onClick={() => {
                   navigate(`/item/${itemIdFromPath}`);
-                }}>
+                }}
+              >
                 {'Lukk'}
               </Button>
             </GridLegacy>

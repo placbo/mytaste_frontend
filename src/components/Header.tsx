@@ -22,7 +22,8 @@ export const Header: FC = () => {
             p: 2,
             gap: 2,
             borderBottom: '1px solid grey',
-          }}>
+          }}
+        >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <img alt="logo" src={logo} height="50px"></img>
             <Typography
@@ -30,7 +31,8 @@ export const Header: FC = () => {
               component={Link}
               to={'/'}
               color="common.white"
-              sx={{ textDecoration: 'none', ml: 1 }}>
+              sx={{ textDecoration: 'none', ml: 1 }}
+            >
               MyTaste
             </Typography>
           </Box>

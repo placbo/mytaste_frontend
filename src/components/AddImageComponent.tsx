@@ -48,7 +48,6 @@ const uploadImage = async (
     if (setError) setError(error as Error);
   } finally {
     if (setUploading) setUploading(false);
-
   }
 };
 
@@ -60,7 +59,13 @@ interface Props {
   setImageFileName: Dispatch<SetStateAction<string | undefined>>;
 }
 
-export const AddImageComponent: FC<Props> = ({ itemId, setError, setSuccess, imageFileName, setImageFileName }) => {
+export const AddImageComponent: FC<Props> = ({
+  itemId,
+  setError,
+  setSuccess,
+  imageFileName,
+  setImageFileName,
+}) => {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const handleFileUpload = async (file: File | null) => {
@@ -68,7 +73,9 @@ export const AddImageComponent: FC<Props> = ({ itemId, setError, setSuccess, ima
     if (itemId && file && file?.size < maxFileSizeMb) {
       const generatedFileName = await uploadImage(file, itemId, setError, setIsUploadingImage);
       setSuccess(true);
-      if (generatedFileName ){setImageFileName(generatedFileName);}
+      if (generatedFileName) {
+        setImageFileName(generatedFileName);
+      }
     } else {
       setError(new Error('For stor fil'));
     }
@@ -86,7 +93,13 @@ export const AddImageComponent: FC<Props> = ({ itemId, setError, setSuccess, ima
         />
       ) : (
         <>
-          <IconButton disabled={!itemId} size="large" color="primary" aria-label="upload picture" component="label">
+          <IconButton
+            disabled={!itemId}
+            size="large"
+            color="primary"
+            aria-label="upload picture"
+            component="label"
+          >
             <input
               id="file-upload"
               hidden

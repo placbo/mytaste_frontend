@@ -102,14 +102,17 @@ export const ItemDetails: FC = () => {
               </Alert>
             )}
             <Stack direction="row-reverse" spacing={1}>
-              {tags?.map((tag) => <Chip key={tag.tagId} label={tag.tag} variant="outlined" />)}
+              {tags?.map((tag) => (
+                <Chip key={tag.tagId} label={tag.tag} variant="outlined" />
+              ))}
             </Stack>
           </CardContent>
           <CardMedia
             sx={{ ObjectFit: 'cover', height: '30rem' }}
             component="img"
             image={item.imageURL ? `${IMAGES_URL}/${item.imageURL}` : placeholderItemImage}
-            alt="image"></CardMedia>
+            alt="image"
+          ></CardMedia>
           <CardContent>
             {isLoadingReviews && <CircularProgress />}
             {reviewsApiError && (

@@ -1,4 +1,14 @@
-import { Alert, Button, Card, CardContent, CardHeader, CardMedia, Container, GridLegacy, Typography } from '@mui/material';
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Container,
+  GridLegacy,
+  Typography,
+} from '@mui/material';
 import { FC, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -40,14 +50,24 @@ export const AddNewItemPage: FC = () => {
     const resultItemId = saveItemResult.id;
 
     const tagsList = dataFromForm.tags.split(',');
-    await axiosPostHandler(`${ITEMS_URL}/${resultItemId}/tags`, { tags: tagsList }, setSavingError, setIsSaving);
+    await axiosPostHandler(
+      `${ITEMS_URL}/${resultItemId}/tags`,
+      { tags: tagsList },
+      setSavingError,
+      setIsSaving
+    );
 
     const rewiewToSave: Review = {
       comment: dataFromForm.review ?? '',
       user: user?.id ?? '',
       rating: dataFromForm.rating ?? 0,
     };
-    await axiosPostHandler(`${ITEMS_URL}/${resultItemId}/reviews`, rewiewToSave, setSavingError, setIsSaving);
+    await axiosPostHandler(
+      `${ITEMS_URL}/${resultItemId}/reviews`,
+      rewiewToSave,
+      setSavingError,
+      setIsSaving
+    );
 
     setNewItemId(resultItemId);
   };
@@ -82,7 +102,8 @@ export const AddNewItemPage: FC = () => {
               setError={setSaveImageError}
               setSuccess={setSaveImageSuccess}
               imageFileName={imageFileName}
-              setImageFileName={setImageFileName}></AddImageComponent>
+              setImageFileName={setImageFileName}
+            ></AddImageComponent>
           )}
 
           {saveImageError && <Alert severity="error">{'Kunne ikke lagre bilde'}</Alert>}
@@ -96,7 +117,8 @@ export const AddNewItemPage: FC = () => {
                 sx={{ ml: 2 }}
                 onClick={() => {
                   navigate('/');
-                }}>
+                }}
+              >
                 {'Lukk'}
               </Button>
             </GridLegacy>

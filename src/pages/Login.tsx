@@ -24,7 +24,7 @@ export const LoginPage = () => {
     try {
       setIsLoading(true);
       setLoginError('');
-      const result = await axios.post(API_BASE_URL+ LOGIN_URL, {
+      const result = await axios.post(API_BASE_URL + LOGIN_URL, {
         password,
       });
       const fetchedToken = await result.data.token;
@@ -53,7 +53,8 @@ export const LoginPage = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
+      }}
+    >
       <Box>
         <TextField
           id="password"
