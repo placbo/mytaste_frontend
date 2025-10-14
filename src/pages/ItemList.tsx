@@ -18,11 +18,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Rating from '@mui/material/Rating';
 import { useEffect, useState, useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { getItems, searchItems, getTags } from '../api/api.js';
+import { getItems, searchItems } from '../api/api.js';
 import { DEFAULT_NUMBER_OF_RESULTS } from '../api/apiUtils.js';
 import { THUMBNAIL_URL } from '../constants.js';
 import placeholderItemImage from '../resources/images/placeholder.png';
-import { Item, TagWithUsageCount } from '../types.js';
+import { Item } from '../types.js';
+import { useTags } from '../hooks/useTags.js';
 
 export function ItemList() {
   const [items, setItems] = useState<Item[]>([]);
@@ -36,32 +37,11 @@ export function ItemList() {
   const [hasSearched, setHasSearched] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
-  // New state for tags
-  const [tags, setTags] = useState<TagWithUsageCount[]>([]);
-  const [tagsLoading, setTagsLoading] = useState(false);
-  const [tagsError, setTagsError] = useState<Error | undefined>(undefined);
+  // Use the custom hook for tags
+  const { tags, loading: tagsLoading, error: tagsError, getTopTags } = useTags();
 
   // State to track if more items are available
   const [hasMore, setHasMore] = useState(true);
-
-  // Load tags when component mounts
-  useEffect(() => {
-    const fetchTags = async () => {
-      setTagsLoading(true);
-      setTagsError(undefined);
-      try {
-        const result = await getTags(setTagsError, setTagsLoading);
-        if (result) {
-          setTags(result);
-        }
-      } catch (error) {
-        console.error('Error fetching tags:', error);
-      } finally {
-        setTagsLoading(false);
-      }
-    };
-    fetchTags();
-  }, []);
 
   // Load complete list of items (not search) on page or when exiting search mode
   useEffect(() => {
@@ -81,36 +61,39 @@ export function ItemList() {
   }, [page, isSearchMode]);
 
   // Search function
-  const performSearch = useCallback(async (searchQuery: string, pageNum: number = 1) => {
-    if (!searchQuery.trim()) {
-      setIsSearchMode(false);
-      setItems([]);
-      setPage(1);
-      setHasMore(true);
-      return;
-    }
-
-    setApiError(undefined);
-    setIsSearchMode(true);
-
-    const result = await searchItems(
-      searchQuery,
-      pageNum,
-      DEFAULT_NUMBER_OF_RESULTS,
-      setApiError,
-      setIsWaiting
-    );
-    if (result) {
-      if (pageNum === 1) {
-        setItems(result.items);
-      } else {
-        setItems((prev) => [...prev, ...result.items]);
+  const performSearch = useCallback(
+    async (searchQuery: string, pageNum: number = 1) => {
+      if (!searchQuery.trim()) {
+        setIsSearchMode(false);
+        setItems([]);
+        setPage(1);
+        setHasMore(true);
+        return;
       }
-      setHasMore(result.items.length === DEFAULT_NUMBER_OF_RESULTS);
-    } else {
-      setHasMore(false);
-    }
-  }, []);
+
+      setApiError(undefined);
+      setIsSearchMode(true);
+
+      const result = await searchItems(
+        searchQuery,
+        pageNum,
+        DEFAULT_NUMBER_OF_RESULTS,
+        setApiError,
+        setIsWaiting
+      );
+      if (result) {
+        if (pageNum === 1) {
+          setItems(result.items);
+        } else {
+          setItems((prev) => [...prev, ...result.items]);
+        }
+        setHasMore(result.items.length === DEFAULT_NUMBER_OF_RESULTS);
+      } else {
+        setHasMore(false);
+      }
+    },
+    [setApiError, setIsWaiting]
+  );
 
   // Handle search input changes with debouncing
   useEffect(() => {
@@ -197,24 +180,21 @@ export function ItemList() {
               10 mest brukte tags (klikk for å søke):
             </Typography>
             <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
-              {tags
-                .sort((a: TagWithUsageCount, b: TagWithUsageCount) => b.usageCount - a.usageCount) // Sort by usage count descending
-                .slice(0, 10) // Show top 10 most used tags
-                .map((tag: TagWithUsageCount) => (
-                  <Chip
-                    key={tag.tagId}
-                    label={`${tag.tag} (${tag.usageCount})`}
-                    variant="outlined"
-                    size="small"
-                    clickable
-                    onClick={() => setQuery(tag.tag)}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: 'action.hover',
-                      },
-                    }}
-                  />
-                ))}
+              {getTopTags(10).map((tag) => (
+                <Chip
+                  key={tag.tagId}
+                  label={`${tag.tag} (${tag.usageCount})`}
+                  variant="outlined"
+                  size="small"
+                  clickable
+                  onClick={() => setQuery(tag.tag)}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                  }}
+                />
+              ))}
             </Stack>
           </>
         )}
