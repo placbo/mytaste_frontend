@@ -1,23 +1,19 @@
 import { Alert, Box, Typography, Chip, Stack, CircularProgress } from '@mui/material';
-import { TagWithUsageCount } from '../types.js';
+import { useTags } from '../hooks/useTags.js';
 
 interface TagListProps {
-  tags: TagWithUsageCount[];
-  loading: boolean;
-  error?: Error;
   onTagClick: any;
   maxTags?: number;
   title?: string;
 }
 
 export function TagList({
-  tags,
-  loading,
-  error,
   onTagClick,
   maxTags = 10,
   title = '10 mest brukte tags (klikk for å søke):',
 }: TagListProps) {
+  const { tags, loading, error } = useTags();
+
   return (
     <Box sx={{ px: 2, pb: 2 }}>
       {loading && (

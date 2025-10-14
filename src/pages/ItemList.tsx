@@ -1,7 +1,6 @@
 import { useEffect, useRef, ReactNode } from 'react';
 import { Alert, Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useTags } from '../hooks/useTags.js';
 import { useItems } from '../hooks/useItems.js';
 import { SearchBar } from '../components/SearchBar.js';
 import { TagList } from '../components/TagList.js';
@@ -9,7 +8,6 @@ import { ItemCard } from '../components/ItemCard.js';
 
 export function ItemList() {
   // Use the custom hooks
-  const { tags, loading: tagsLoading, error: tagsError } = useTags();
   const {
     items,
     isWaiting,
@@ -82,9 +80,6 @@ export function ItemList() {
       />
 
       <TagList
-        tags={tags}
-        loading={tagsLoading}
-        error={tagsError}
         onTagClick={setQueryValue}
         maxTags={10}
         title="10 mest brukte tags (klikk for å søke):"
