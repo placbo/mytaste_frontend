@@ -1,4 +1,5 @@
-import { Alert, Box, Button, Typography } from '@mui/material';
+import { useEffect, useRef, ReactNode } from 'react';
+import { Alert, Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTags } from '../hooks/useTags.js';
 import { useItems } from '../hooks/useItems.js';
@@ -21,6 +22,55 @@ export function ItemList() {
     clearQuery,
     triggerNextPageFetch,
   } = useItems();
+
+  // sentinel ref for infinite scroll
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!hasMore || isWaiting) return;
+
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && hasMore && !isWaiting) {
+            // temporarily unobserve to avoid rapid duplicate triggers
+            observer.unobserve(entry.target);
+            triggerNextPageFetch();
+          }
+        }
+      },
+      { root: null, rootMargin: '200px', threshold: 0.1 }
+    );
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [hasMore, isWaiting, triggerNextPageFetch]);
+
+  // whether we should show the compact bottom loader (while fetching next page)
+  const showBottomLoader = hasMore && isWaiting && items.length > 0;
+
+  // precompute bottom area to avoid nested ternary in JSX (satisfies linter)
+  let bottomArea: ReactNode = null;
+  if (showBottomLoader) {
+    bottomArea = (
+      <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }} aria-live="polite">
+          <CircularProgress size={20} />
+          <Typography variant="body2">Laster mer…</Typography>
+        </Box>
+      </Box>
+    );
+  } else if (hasMore) {
+    bottomArea = (
+      <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+        <div ref={sentinelRef} aria-hidden style={{ width: '100%', height: 1 }} />
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -62,13 +112,8 @@ export function ItemList() {
         <ItemCard key={item.itemId} item={item} />
       ))}
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
-        {hasMore && (
-          <Button onClick={triggerNextPageFetch} disabled={isWaiting}>
-            Vis mer...
-          </Button>
-        )}
-      </Box>
+      {/* bottom area: show a small visible loader while loading next page, otherwise the sentinel element */}
+      {bottomArea}
     </>
   );
 }
