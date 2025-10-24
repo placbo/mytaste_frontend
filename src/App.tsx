@@ -15,6 +15,7 @@ import { ItemDetails } from './pages/Item';
 import { ItemList } from './pages/ItemList';
 import { NotFound } from './pages/NotFound';
 import { LoginPage } from './pages/Login';
+import { UserProfile } from './pages/UserProfile';
 import { AuthProvider } from './context/AuthContext';
 
 const darkTheme = createTheme({
@@ -34,6 +35,7 @@ function App() {
             <Routes>
               <Route path="/" element={<ItemList />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/profile" element={<UserProfile />} />
               <Route path="/auth/success" element={<AuthSuccess />} />
               <Route path="/item/:id" element={<ItemDetails />} />
               <Route path="/item/:id/edit" element={<EditItemPage />} />

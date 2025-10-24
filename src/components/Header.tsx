@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/mytaste.png';
@@ -10,7 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { FC } from 'react';
 
 export const Header: FC = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -44,12 +46,30 @@ export const Header: FC = () => {
             </Button>
           )}
 
-          {!user ? (
+          {user ? (
+            <Box
+              component={Link}
+              to="/profile"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                textDecoration: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
+              }}
+            >
+              <Typography variant="body1" color="common.white">
+                {user.displayName}
+              </Typography>
+              <IconButton sx={{ p: 0 }}>
+                <Avatar src={user.image} alt={user.displayName} />
+              </IconButton>
+            </Box>
+          ) : (
             <Button component={Link} to="/login">
               Logg in
             </Button>
-          ) : (
-            <Button onClick={logout}>Logg out</Button>
           )}
         </Toolbar>
       </AppBar>
