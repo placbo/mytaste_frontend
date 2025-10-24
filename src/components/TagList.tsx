@@ -11,7 +11,7 @@ export function TagList({
   onTagClick,
   maxTags = 10,
   title = '10 mest brukte tags (klikk for å søke):',
-}: TagListProps) {
+}: Readonly<TagListProps>) {
   const { tags, loading, error } = useTags();
 
   return (

@@ -17,37 +17,13 @@ import { NotFound } from './pages/NotFound';
 import { LoginPage } from './pages/Login';
 import { AuthProvider } from './context/AuthContext';
 
-export const DEFAULT_USER = 'perbjester@gmail.com';
-
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
 });
 
-// const getTokenExpiry = (token: string | null): number => {
-//   if (!token) return 0;
-//   try {
-//     return JSON.parse(atob(token.split('.')[1])).exp;
-//     //todo! sjekk om det funker . finn eksempel. https://stackoverflow.com/questions/72866826/decoding-a-jwt-token-on-frontend-with-atob-gives-me-failed-to-execute-atob-on
-//   } catch (error) {
-//     return 0;
-//   }
-// };
-//
-// const isTokenExpired = (expiry: number): boolean => {
-//   return Math.floor(new Date().getTime() / 1000) >= expiry;
-// };
-
 function App() {
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   const tokenExpiry = getTokenExpiry(token);
-  //   if (token && !isTokenExpired(tokenExpiry)) {
-  //     setIsUserLoggedIn(token);
-  //   }
-  // }, []);
-
   return (
     <AuthProvider>
       <ThemeProvider theme={darkTheme}>

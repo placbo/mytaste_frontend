@@ -14,7 +14,7 @@ import { jwtDecode } from 'jwt-decode';
 export type User = {
   id: string;
   displayName: string;
-  image: string;
+  image?: string;
   iat: number;
   exp: number;
   isAdmin: boolean;

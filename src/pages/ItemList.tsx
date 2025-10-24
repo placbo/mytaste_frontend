@@ -26,10 +26,8 @@ export function ItemList() {
 
   useEffect(() => {
     if (!hasMore || isWaiting) return;
-
     const el = sentinelRef.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -42,9 +40,7 @@ export function ItemList() {
       },
       { root: null, rootMargin: '200px', threshold: 0.1 }
     );
-
     observer.observe(el);
-
     return () => observer.disconnect();
   }, [hasMore, isWaiting, triggerNextPageFetch]);
 

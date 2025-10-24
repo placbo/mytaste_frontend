@@ -8,7 +8,7 @@ const AuthSuccess: React.FC = () => {
   const { setUser } = useAuth();
 
   useEffect(() => {
-    const token = new URLSearchParams(window.location.search).get('token');
+    const token = new URLSearchParams(globalThis.location.search).get('token');
     if (token) {
       const decodedUser: User = jwtDecode(token);
       localStorage.setItem('token', token);
