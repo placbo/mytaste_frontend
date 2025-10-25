@@ -96,7 +96,7 @@ export const EditItemPage: FC = () => {
     );
     const rewiewToSave: Review = {
       comment: dataFromForm.review,
-      user: user?.id,
+      user: user?.displayName,
       rating: dataFromForm.rating,
     };
 

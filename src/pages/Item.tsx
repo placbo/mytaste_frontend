@@ -123,13 +123,17 @@ export const ItemDetails: FC = () => {
             <ReviewList reviews={reviews} />
           </CardContent>
           <CardActions>
-            <Button disabled>Ranger</Button>
-            {user && (
+            {user?.isAdmin && (
               <Button component={Link} to={`/item/${id}/edit`}>
                 Rediger
               </Button>
             )}
-            {user && <Button onClick={deleteItem}>Slett</Button>}
+            {user?.isAdmin && <Button onClick={deleteItem}>Slett</Button>}
+            {user && !user.isAdmin && (
+              <Button component={Link} to={`/item/${id}/rate`}>
+                Ranger
+              </Button>
+            )}
           </CardActions>
         </Card>
       )}

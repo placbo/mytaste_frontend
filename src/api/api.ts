@@ -1,13 +1,15 @@
 import { ITEMS_URL } from '../constants';
 import {
   axiosGetHandler,
+  axiosPostHandler,
+  axiosPutHandler,
   NUMBER_PR_PAGE_PARAM,
   PAGE_PARAM,
   SORT_DESCENDING,
   SORT_PARAM,
 } from './apiUtils';
 import { Dispatch, SetStateAction } from 'react';
-import { Item, ItemsResponse, Tag, TagWithUsageCount } from '../types.js';
+import { Item, ItemsResponse, Review, Tag, TagWithUsageCount } from '../types.js';
 
 export const getAllItems = (
   setError?: any,
@@ -66,4 +68,28 @@ export const getItemReviews = (
   setLoading?: Dispatch<SetStateAction<boolean>>
 ): Promise<any> => {
   return axiosGetHandler(`${ITEMS_URL}/${id}/reviews`, setError, setLoading);
+};
+
+export const getUserReview = (
+  itemId: number,
+  setError?: any,
+  setLoading?: Dispatch<SetStateAction<boolean>>
+): Promise<Review> => {
+  return axiosGetHandler(`${ITEMS_URL}/${itemId}/review`, setError, setLoading);
+};
+
+export const saveReview = (
+  review: Review,
+  setError: Dispatch<SetStateAction<Error | undefined>>,
+  setSaving: Dispatch<SetStateAction<boolean>>
+): Promise<any> => {
+  const itemId = review.itemId;
+  const url = `${ITEMS_URL}/${itemId}/reviews`;
+  if (review.reviewId) {
+    // Update existing review
+    return axiosPutHandler(url, review, setError, setSaving);
+  } else {
+    // Create new review
+    return axiosPostHandler(url, review, setError, setSaving);
+  }
 };

@@ -18,6 +18,7 @@ export interface Review {
   reviewId?: number;
   itemId?: number;
   user?: string;
+  userDisplayName?: string;
   comment?: string;
   rating: number;
 }
