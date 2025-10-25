@@ -23,7 +23,7 @@ const StyledImage = styled.img`
   object-fit: cover;
 `;
 
-const maxFileSizeMb = 6 * 1024 * 1024;
+const maxFileSizeMb = 9 * 1024 * 1024;
 
 const uploadImage = async (
   file: File,
@@ -70,14 +70,17 @@ export const AddImageComponent: FC<Props> = ({
 
   const handleFileUpload = async (file: File | null) => {
     setSuccess(false);
-    if (itemId && file && file?.size < maxFileSizeMb) {
+    if (file && file.size >= maxFileSizeMb) {
+      alert(`Bildet er for stort. Maksimal filstørrelse er ${maxFileSizeMb / (1024 * 1024)} MB.`);
+      setError(new Error('For stor fil'));
+      return;
+    }
+    if (itemId && file) {
       const generatedFileName = await uploadImage(file, itemId, setError, setIsUploadingImage);
       setSuccess(true);
       if (generatedFileName) {
         setImageFileName(generatedFileName);
       }
-    } else {
-      setError(new Error('For stor fil'));
     }
   };
 
