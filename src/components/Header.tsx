@@ -26,15 +26,18 @@ export const Header: FC = () => {
             borderBottom: '1px solid grey',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            component={Link}
+            to={'/'}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+          >
             <img alt="logo" src={logo} height="50px"></img>
-            <Typography
-              variant="h6"
-              component={Link}
-              to={'/'}
-              color="common.white"
-              sx={{ textDecoration: 'none', ml: 1 }}
-            >
+            <Typography variant="h6" color="common.white" sx={{ ml: 1 }}>
               MyTaste
             </Typography>
           </Box>
